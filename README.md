@@ -66,13 +66,74 @@ This project delivers a **simulated, end-to-end Smart Pharmacy Supply Chain Syst
 
 - **Backend:** Java 17, Spring Boot 3.2.5 (Spring Web, Spring Data JPA, Hibernate Validator)
 - **Database:** MySQL 8.0 / 5.7 (with built-in H2 in-memory zero-configuration fallback profile)
-- **Build Tool:** Apache Maven 3.9.6 (includes self-contained wrapper `mvnw.cmd`)
+- **Build Tool:** Apache Maven 3.9.6
 - **Frontend:** Semantic HTML5, Vanilla CSS3 (Custom Design System, CSS Grid & Flexbox), Vanilla JavaScript (ES6+ Fetch API)
 - **Architecture:** Layered RESTful Architecture (Controller -> Service -> Repository -> Database)
 
 ---
 
-## 5. System Architecture
+## 5. Project Directory Structure
+
+```
+Smart_Pharmacy_SupplyChain_Systems/
+├── .gitignore                                   # Git ignore rules for build and IDE files
+├── README.md                                    # Comprehensive Academic Report & Setup Guide
+├── run-backend.bat                              # 1-Click Windows Runner for Spring Boot Backend
+│
+├── backend/                                     # Java 17 Spring Boot 3 Application
+│   ├── pom.xml                                  # Maven dependencies and build configuration
+│   └── src/
+│       ├── main/
+│       │   ├── java/com/pharmacy/supplychain/
+│       │   │   ├── config/                      # CORS & Initial Test Data Configuration
+│       │   │   ├── controller/                  # REST API Controllers (6 Endpoints)
+│       │   │   ├── dto/                         # Data Transfer Objects & Validations
+│       │   │   ├── entity/                      # JPA Entities (3NF Normalized)
+│       │   │   ├── exception/                   # Global Exception Handling & HTTP 409/404/400
+│       │   │   ├── repository/                  # Spring Data JPA Repositories
+│       │   │   ├── service/                     # FEFO Engine & Business Logic Interfaces
+│       │   │   │   └── impl/                    # Business Logic Implementation
+│       │   │   └── SmartPharmacyApplication.java# Spring Boot Application Entry Point
+│       │   └── resources/
+│       │       ├── application.properties       # Production MySQL Configuration
+│       │       └── application-local.properties # In-Memory H2 Fallback Profile
+│
+├── frontend/                                    # Clean Vanilla HTML5 / CSS3 / ES6 Frontend
+│   ├── index.html                               # Executive Dashboard & Live Alert Metrics
+│   ├── medicines.html                           # Medicine Catalog & Temperature Specs
+│   ├── suppliers.html                           # Certified Supplier Directory
+│   ├── batches.html                             # Batch Inventory Ledger
+│   ├── dispense.html                            # Automated FEFO Dispensing Console
+│   ├── expiry.html                              # Multi-Tier Expiry Radar (90d / 60d / 30d / Expired)
+│   ├── temperature.html                         # Cold-Chain Sensor Logger & Compliance Monitor
+│   ├── verification.html                        # Anti-Counterfeit Batch Authenticity Scanner
+│   ├── css/
+│   │   └── styles.css                           # High-Contrast Clinical Design System
+│   └── js/
+│       └── api.js                               # Asynchronous Fetch API Communication
+│
+├── database/                                    # Database Schemas & Initial Seed
+│   ├── schema.sql                               # Normalized MySQL 8.0 3NF DDL
+│   └── seed.sql                                 # Seed script with realistic clinical test data
+│
+├── docs/                                        # Official Capstone Documentation & Runbooks
+│   ├── SIST_Student_FullStack_Project_Runbook.xlsx # Official SIST CSE (AI) Project Runbook (All 12 Sheets)
+│   └── SIST_Student_FullStack_Project_Runbook.pdf  # Formatted PDF Export of Project Runbook
+│
+├── presentation/                                # Academic Presentation & Viva Materials
+│   ├── presentation.html                        # 20-Slide Interactive Browser Presentation
+│   ├── style.css                                # High-Contrast Projector Light Theme
+│   ├── Smart_Pharmacy_Supply_Chain_System.pptx  # Editable Microsoft PowerPoint Presentation
+│   ├── Smart_Pharmacy_Supply_Chain_System.pdf   # 20-Slide Landscape Presentation Document (PDF)
+│   └── slides_data.json                         # Structured JSON Slide Definitions
+│
+└── testing/                                     # Automated API Testing & Validation
+    └── Smart_Pharmacy_Supply_Chain.postman_collection.json # Complete Postman Test Suite
+```
+
+---
+
+## 6. System Architecture
 
 ```
 +-------------------------------------------------------------------------+
