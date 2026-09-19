@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Smart Pharmacy Supply Chain System</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="brand-section">
+        <div class="brand-icon">⚕</div>
+        <div>
+          <div class="brand-title">Smart Pharmacy</div>
+          <div class="brand-subtitle">Supply Chain System</div>
+        </div>
+      </div>
+      <ul class="nav-menu">
+        <li class="nav-item active">
+          <a href="index.html"><span class="nav-icon">📊</span> <span>Dashboard</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="medicines.html"><span class="nav-icon">💊</span> <span>Medicines</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="suppliers.html"><span class="nav-icon">🏢</span> <span>Suppliers</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="batches.html"><span class="nav-icon">📦</span> <span>Batches</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="dispense.html"><span class="nav-icon">⚖️</span> <span>FEFO Dispense</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="expiry.html"><span class="nav-icon">⏳</span> <span>Expiry Alerts</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="temperature.html"><span class="nav-icon">🌡️</span> <span>Cold-Chain Temp</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="verification.html"><span class="nav-icon">🛡️</span> <span>Batch Verification</span></a>
+        </li>
+      </ul>
+      <div class="sidebar-footer">
+        <span class="status-dot"></span> System Connected (Spring Boot 3)
+      </div>
+    </aside>
+
+    <!-- Main View -->
+    <div class="main-wrapper">
+      <header class="top-header">
+        <div class="page-headline">
+          <h1>Pharmacy Overview Dashboard</h1>
+          <p>Real-time pharmaceutical inventory, cold-chain compliance & FEFO monitoring</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary btn-sm" onclick="loadDashboard()">🔄 Refresh</button>
+          <a href="dispense.html" class="btn btn-primary btn-sm">⚡ Dispense Medicine</a>
+        </div>
+      </header>
+
+      <main class="content-body">
+        <!-- 5 KPI Cards Required by Specification -->
+        <section class="kpi-grid">
+          <div class="kpi-card info">
+            <div class="kpi-header">
+              <span class="kpi-title">Total Medicines</span>
+              <span class="kpi-icon">💊</span>
+            </div>
+            <div class="kpi-value" id="kpi-total-medicines">-</div>
+            <div class="kpi-subtext">Active pharmaceutical catalog items</div>
+          </div>
+
+          <div class="kpi-card success">
+            <div class="kpi-header">
+              <span class="kpi-title">Active Batches</span>
+              <span class="kpi-icon">📦</span>
+            </div>
+            <div class="kpi-value" id="kpi-active-batches">-</div>
+            <div class="kpi-subtext">Batches with positive inventory stock</div>
+          </div>
+
+          <div class="kpi-card warning">
+            <div class="kpi-header">
+              <span class="kpi-title">Low Stock</span>
+              <span class="kpi-icon">⚠️</span>
+            </div>
+            <div class="kpi-value" id="kpi-low-stock">-</div>
+            <div class="kpi-subtext">Batches below 20 units threshold</div>
+          </div>
+
+          <div class="kpi-card warning">
+            <div class="kpi-header">
+              <span class="kpi-title">Expiring Soon</span>
+              <span class="kpi-icon">⏳</span>
+            </div>
+            <div class="kpi-value" id="kpi-expiring-soon">-</div>
+            <div class="kpi-subtext">Batches expiring within 90 days</div>
+          </div>
+
+          <div class="kpi-card danger">
+            <div class="kpi-header">
+              <span class="kpi-title">Expired</span>
+              <span class="kpi-icon">🛑</span>
+            </div>
+            <div class="kpi-value" id="kpi-expired">-</div>
+            <div class="kpi-subtext">Expired batches locked from dispensing</div>
+          </div>
+        </section>
+
+        <!-- Table 1: Recent Expiry Alerts -->
+        <div class="panel">
+          <div class="panel-header">
+            <h2 class="panel-title">⏳ Recent Expiry Alerts (90, 60, 30 Days & Expired)</h2>
+            <a href="expiry.html" class="btn btn-secondary btn-sm">View Full Radar →</a>
+          </div>
+          <div class="panel-body no-padding">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Batch Number</th>
+                    <th>Medicine Name</th>
+                    <th>Category</th>
+                    <th>Stock Qty</th>
+                    <th>Expiry Date</th>
+                    <th>Days Remaining</th>
+                    <th>Alert Status</th>
+                  </tr>
+                </thead>
+                <tbody id="table-recent-expiry">
+                  <tr><td colspan="7" style="text-align:center; padding: 24px;">Loading expiry alerts...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table 2: Recent Cold-Chain Temperature Alerts -->
+        <div class="panel">
+          <div class="panel-header">
+            <h2 class="panel-title">🌡️ Recent Cold-Chain Temperature Alerts (Out-of-Range)</h2>
+            <a href="temperature.html" class="btn btn-secondary btn-sm">Temperature Console →</a>
+          </div>
+          <div class="panel-body no-padding">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Log Time</th>
+                    <th>Batch Number</th>
+                    <th>Medicine</th>
+                    <th>Allowed Range</th>
+                    <th>Recorded Temp</th>
+                    <th>Compliance</th>
+                    <th>Clinical Notes</th>
+                  </tr>
+                </thead>
+                <tbody id="table-recent-temperature">
+                  <tr><td colspan="7" style="text-align:center; padding: 24px;">Loading temperature records...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table 3: Recent Batches Verification Status -->
+        <div class="panel">
+          <div class="panel-header">
+            <h2 class="panel-title">🛡️ Recent Medicine Batches & Verification Status</h2>
+            <a href="verification.html" class="btn btn-secondary btn-sm">Verify Batches →</a>
+          </div>
+          <div class="panel-body no-padding">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Batch Number</th>
+                    <th>Medicine</th>
+                    <th>Supplier</th>
+                    <th>Mfg Date</th>
+                    <th>Expiry Date</th>
+                    <th>Stock</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="table-recent-verification">
+                  <tr><td colspan="7" style="text-align:center; padding: 24px;">Loading batch statuses...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    async function loadDashboard() {
+      try {
+        const response = await API.getDashboardStats();
+        const data = response.data;
+
+        // Populate 5 KPI cards
+        document.getElementById('kpi-total-medicines').innerText = data.totalMedicines;
+        document.getElementById('kpi-active-batches').innerText = data.activeBatches;
+        document.getElementById('kpi-low-stock').innerText = data.lowStockCount;
+        document.getElementById('kpi-expiring-soon').innerText = data.expiringSoonCount;
+        document.getElementById('kpi-expired').innerText = data.expiredCount;
+
+        // Table 1: Expiry alerts
+        const expiryTbody = document.getElementById('table-recent-expiry');
+        if (!data.recentExpiryAlerts || data.recentExpiryAlerts.length === 0) {
+          expiryTbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 24px; color: var(--gray-500);">No active near-expiry alerts. All stock is currently safe.</td></tr>';
+        } else {
+          expiryTbody.innerHTML = data.recentExpiryAlerts.map(a => `
+            <tr>
+              <td><strong>${a.batchNumber}</strong></td>
+              <td>${a.medicineName} <span style="font-size:12px; color:var(--gray-500);">(${a.genericName})</span></td>
+              <td>${a.category}</td>
+              <td><strong>${a.quantity}</strong></td>
+              <td>${formatDate(a.expiryDate)}</td>
+              <td>${a.daysRemaining < 0 ? '<span style="color:var(--danger); font-weight:700;">' + Math.abs(a.daysRemaining) + 'd Ago</span>' : a.daysRemaining + ' days'}</td>
+              <td>${getAlertBadge(a.alertCategory, a.daysRemaining)}</td>
+            </tr>
+          `).join('');
+        }
+
+        // Table 2: Temperature breaches
+        const tempTbody = document.getElementById('table-recent-temperature');
+        if (!data.recentTemperatureAlerts || data.recentTemperatureAlerts.length === 0) {
+          tempTbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 24px; color: var(--success);">All cold-chain sensors reporting normal temperatures. No violations.</td></tr>';
+        } else {
+          tempTbody.innerHTML = data.recentTemperatureAlerts.map(t => `
+            <tr>
+              <td>${formatDateTime(t.recordedAt)}</td>
+              <td><strong>${t.batch ? t.batch.batchNumber : '-'}</strong></td>
+              <td>${t.batch && t.batch.medicine ? t.batch.medicine.name : '-'}</td>
+              <td>${t.batch && t.batch.medicine ? t.batch.medicine.minTemperature + '°C to ' + t.batch.medicine.maxTemperature + '°C' : '-'}</td>
+              <td style="font-weight:700; color:var(--danger);">${t.recordedTemperature.toFixed(1)}°C</td>
+              <td>${getComplianceBadge(t.complianceStatus)}</td>
+              <td>${t.notes || '-'}</td>
+            </tr>
+          `).join('');
+        }
+
+        // Table 3: Verification status
+        const verTbody = document.getElementById('table-recent-verification');
+        if (!data.recentVerificationStatus || data.recentVerificationStatus.length === 0) {
+          verTbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 24px; color: var(--gray-500);">No batches registered.</td></tr>';
+        } else {
+          verTbody.innerHTML = data.recentVerificationStatus.map(b => `
+            <tr>
+              <td><strong>${b.batchNumber}</strong></td>
+              <td>${b.medicine ? b.medicine.name : '-'}</td>
+              <td>${b.supplier ? b.supplier.supplierName : '-'}</td>
+              <td>${formatDate(b.manufacturingDate)}</td>
+              <td>${formatDate(b.expiryDate)}</td>
+              <td>${b.quantity}</td>
+              <td>${getVerificationBadge(b.verificationStatus)}</td>
+            </tr>
+          `).join('');
+        }
+
+      } catch (err) {
+        console.error('Failed to load dashboard:', err);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadDashboard);
+  </script>
+</body>
+</html>

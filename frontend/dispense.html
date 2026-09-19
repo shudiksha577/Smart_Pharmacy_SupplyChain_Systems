@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FEFO Dispense — Smart Pharmacy Supply Chain System</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand-section">
+        <div class="brand-icon">⚕</div>
+        <div>
+          <div class="brand-title">Smart Pharmacy</div>
+          <div class="brand-subtitle">Supply Chain System</div>
+        </div>
+      </div>
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="index.html"><span class="nav-icon">📊</span> <span>Dashboard</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="medicines.html"><span class="nav-icon">💊</span> <span>Medicines</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="suppliers.html"><span class="nav-icon">🏢</span> <span>Suppliers</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="batches.html"><span class="nav-icon">📦</span> <span>Batches</span></a>
+        </li>
+        <li class="nav-item active">
+          <a href="dispense.html"><span class="nav-icon">⚖️</span> <span>FEFO Dispense</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="expiry.html"><span class="nav-icon">⏳</span> <span>Expiry Alerts</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="temperature.html"><span class="nav-icon">🌡️</span> <span>Cold-Chain Temp</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="verification.html"><span class="nav-icon">🛡️</span> <span>Batch Verification</span></a>
+        </li>
+      </ul>
+      <div class="sidebar-footer">
+        <span class="status-dot"></span> System Connected (Spring Boot 3)
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-wrapper">
+      <header class="top-header">
+        <div class="page-headline">
+          <h1>FEFO Dispensing Console</h1>
+          <p>Enforce First-Expired-First-Out protocol to minimize pharmaceutical waste & prevent expiry losses</p>
+        </div>
+      </header>
+
+      <main class="content-body">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start;">
+          <!-- Dispensing Form Panel -->
+          <div class="panel">
+            <div class="panel-header">
+              <h2 class="panel-title">⚡ Issue Dispense Request</h2>
+            </div>
+            <div class="panel-body">
+              <form id="dispense-form" onsubmit="handleDispense(event)">
+                <div class="form-group">
+                  <label class="form-label">Select Medicine to Dispense <span class="required">*</span></label>
+                  <select id="dispense-medicine" class="form-control" onchange="onMedicineSelected()" required>
+                    <option value="">Choose medicine...</option>
+                  </select>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Quantity to Dispense (Units) <span class="required">*</span></label>
+                    <input type="number" id="dispense-qty" class="form-control" min="1" placeholder="e.g. 10" required>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Dispensed To (Ward/Patient)</label>
+                    <input type="text" id="dispense-to" class="form-control" placeholder="e.g. ICU Ward 4B, Emergency">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Prescription / Clinical Notes</label>
+                  <input type="text" id="dispense-notes" class="form-control" placeholder="e.g. Inpatient prescription #8821">
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width:100%; padding:12px; font-size:15px;" id="dispense-btn">
+                  ⚖️ Execute FEFO Dispense
+                </button>
+              </form>
+
+              <!-- Live FEFO Queue Preview -->
+              <div style="margin-top:24px; border-top: 1px solid var(--gray-200); padding-top:16px;">
+                <h3 style="font-size:14px; font-weight:700; color:var(--gray-700); margin-bottom:10px;">
+                  📋 Live Eligible FEFO Queue (Verified & Non-Expired Only)
+                </h3>
+                <div id="fefo-preview-content" style="font-size:13px; color:var(--gray-500);">
+                  Select a medicine above to inspect available batches in earliest-expiry order.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dispense Result / Receipt Panel -->
+          <div class="panel">
+            <div class="panel-header">
+              <h2 class="panel-title">🧾 FEFO Dispensing Receipt & Allocation</h2>
+            </div>
+            <div class="panel-body" id="receipt-container">
+              <div style="text-align: center; padding: 48px 16px; color: var(--gray-400);">
+                <div style="font-size: 40px; margin-bottom: 12px;">⚖️</div>
+                <p>No active dispense transaction yet.</p>
+                <p style="font-size: 13px; margin-top: 4px;">Submit a dispensing request to see real-time batch allocation breakdown.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dispense Audit History Table -->
+        <div class="panel" style="margin-top: 24px;">
+          <div class="panel-header">
+            <h2 class="panel-title">📜 Pharmacy Dispense Audit Trail</h2>
+            <button class="btn btn-secondary btn-sm" onclick="loadHistory()">🔄 Refresh History</button>
+          </div>
+          <div class="panel-body no-padding">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Txn #</th>
+                    <th>Dispensed At</th>
+                    <th>Medicine</th>
+                    <th>Total Qty</th>
+                    <th>Dispensed To</th>
+                    <th>Batches Deducted (FEFO)</th>
+                    <th>Clinical Notes</th>
+                  </tr>
+                </thead>
+                <tbody id="history-tbody">
+                  <tr><td colspan="7" style="text-align:center; padding: 24px;">Loading audit trail...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    let medicines = [];
+
+    async function initialize() {
+      await Promise.all([loadMedicines(), loadHistory()]);
+    }
+
+    async function loadMedicines() {
+      try {
+        const res = await API.getMedicines();
+        medicines = res.data;
+        const select = document.getElementById('dispense-medicine');
+        select.innerHTML = '<option value="">Choose medicine...</option>' +
+          medicines.map(m => `<option value="${m.id}">${m.name} (${m.dosage}) - [Min: ${m.minTemperature}°C, Max: ${m.maxTemperature}°C]</option>`).join('');
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function onMedicineSelected() {
+      const medId = document.getElementById('dispense-medicine').value;
+      const previewDiv = document.getElementById('fefo-preview-content');
+
+      if (!medId) {
+        previewDiv.innerHTML = 'Select a medicine above to inspect available batches in earliest-expiry order.';
+        return;
+      }
+
+      try {
+        const res = await API.getAvailableBatches(medId);
+        const batches = res.data;
+
+        if (batches.length === 0) {
+          previewDiv.innerHTML = `
+            <div style="background:var(--danger-light); color:var(--danger); padding:10px 14px; border-radius:6px; font-weight:600;">
+              ⚠️ No verified, non-expired batches available for this medicine! Dispensing cannot proceed.
+            </div>
+          `;
+          return;
+        }
+
+        let totalStock = batches.reduce((sum, b) => sum + b.quantity, 0);
+
+        previewDiv.innerHTML = `
+          <div style="background:var(--gray-50); border:1px solid var(--gray-200); border-radius:6px; padding:10px; margin-bottom:8px;">
+            <strong>Total Verified Stock Available:</strong> <span style="color:var(--primary); font-size:15px; font-weight:700;">${totalStock} units</span> across ${batches.length} batch(es).
+          </div>
+          <table style="width:100%; border-collapse:collapse; font-size:12px;">
+            <thead>
+              <tr style="text-align:left; color:var(--gray-500); border-bottom:1px solid var(--gray-300);">
+                <th style="padding:4px 0;">Priority</th>
+                <th>Batch #</th>
+                <th>Expiry</th>
+                <th>Available</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${batches.map((b, idx) => `
+                <tr style="border-bottom:1px dashed var(--gray-200); ${idx === 0 ? 'color:var(--primary); font-weight:700;' : ''}">
+                  <td style="padding:6px 0;">${idx === 0 ? '⭐ 1st (Next to Expire)' : (idx + 1) + 'th in Queue'}</td>
+                  <td>${b.batchNumber}</td>
+                  <td>${formatDate(b.expiryDate)}</td>
+                  <td>${b.quantity} units</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        `;
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function handleDispense(e) {
+      e.preventDefault();
+      const medId = parseInt(document.getElementById('dispense-medicine').value);
+      const qty = parseInt(document.getElementById('dispense-qty').value);
+      const to = document.getElementById('dispense-to').value.trim();
+      const notes = document.getElementById('dispense-notes').value.trim();
+
+      const btn = document.getElementById('dispense-btn');
+      btn.disabled = true;
+      btn.innerText = 'Processing FEFO Dispense...';
+
+      try {
+        const payload = {
+          medicineId: medId,
+          quantity: qty,
+          dispensedTo: to || 'Hospital Outpatient',
+          notes: notes
+        };
+
+        const res = await API.dispenseMedicine(payload);
+        const data = res.data;
+
+        showToast('FEFO Dispense completed successfully!', 'success');
+        renderReceipt(data);
+        onMedicineSelected();
+        loadHistory();
+      } catch (err) {
+        // Handled by API error toaster
+      } finally {
+        btn.disabled = false;
+        btn.innerText = '⚖️ Execute FEFO Dispense';
+      }
+    }
+
+    function renderReceipt(data) {
+      const container = document.getElementById('receipt-container');
+      container.innerHTML = `
+        <div class="receipt-card">
+          <div class="receipt-header">
+            <div>
+              <div style="font-size:12px; text-transform:uppercase; color:var(--gray-500); font-weight:700;">Transaction Receipt</div>
+              <div style="font-size:18px; font-weight:800; color:var(--gray-900);">#TXN-${data.recordId}</div>
+            </div>
+            <div style="text-align:right;">
+              <span class="badge badge-verified">FEFO SUCCESS</span>
+              <div style="font-size:11px; color:var(--gray-500); margin-top:4px;">${formatDateTime(data.dispensedAt)}</div>
+            </div>
+          </div>
+
+          <div style="margin-bottom:14px; font-size:14px;">
+            <strong>Medicine:</strong> ${data.medicineName} <br>
+            <strong>Total Units Dispensed:</strong> <span style="color:var(--primary); font-weight:800; font-size:16px;">${data.totalDispensedQuantity}</span><br>
+            <strong>Destination / Ward:</strong> ${data.dispensedTo || '-'}<br>
+            ${data.notes ? `<strong>Notes:</strong> ${data.notes}` : ''}
+          </div>
+
+          <h4 style="font-size:13px; font-weight:700; color:var(--gray-700); margin-bottom:8px; border-top:1px dashed var(--gray-300); padding-top:10px;">
+            FEFO Batch Allocation Breakdown:
+          </h4>
+          <table style="width:100%; border-collapse:collapse; font-size:13px;">
+            <thead>
+              <tr style="text-align:left; background:var(--gray-100); color:var(--gray-600);">
+                <th style="padding:6px 8px;">Batch Number</th>
+                <th style="padding:6px 8px;">Expiry Date</th>
+                <th style="padding:6px 8px;">Qty Deducted</th>
+                <th style="padding:6px 8px;">Remaining Stock</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${data.dispensedBatches.map(item => `
+                <tr style="border-bottom:1px solid var(--gray-200);">
+                  <td style="padding:8px; font-weight:700;">${item.batchNumber}</td>
+                  <td style="padding:8px;">${formatDate(item.expiryDate)}</td>
+                  <td style="padding:8px; color:var(--primary); font-weight:700;">${item.quantityDispensed} units</td>
+                  <td style="padding:8px;">${item.remainingBatchStock} left</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    async function loadHistory() {
+      try {
+        const res = await API.getDispenseRecords();
+        const records = res.data;
+        const tbody = document.getElementById('history-tbody');
+
+        if (records.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:24px;">No dispense records recorded yet.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = records.map(r => `
+          <tr>
+            <td><strong>#TXN-${r.id}</strong></td>
+            <td>${formatDateTime(r.dispensedAt)}</td>
+            <td><strong>${r.medicine ? r.medicine.name : '-'}</strong></td>
+            <td><strong style="color:var(--primary); font-size:15px;">${r.totalDispensedQuantity}</strong></td>
+            <td>${r.dispensedTo || '-'}</td>
+            <td>
+              ${r.items && r.items.length > 0 ? r.items.map(i => `
+                <span class="badge" style="background:#f1f5f9; color:var(--gray-700); margin:2px;">
+                  ${i.batchNumber} (${i.quantityDispensed}u)
+                </span>
+              `).join('') : '-'}
+            </td>
+            <td><span style="font-size:12px; color:var(--gray-500);">${r.notes || '-'}</span></td>
+          </tr>
+        `).join('');
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', initialize);
+  </script>
+</body>
+</html>

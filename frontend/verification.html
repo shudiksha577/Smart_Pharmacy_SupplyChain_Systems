@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Batch Verification — Smart Pharmacy Supply Chain System</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand-section">
+        <div class="brand-icon">⚕</div>
+        <div>
+          <div class="brand-title">Smart Pharmacy</div>
+          <div class="brand-subtitle">Supply Chain System</div>
+        </div>
+      </div>
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="index.html"><span class="nav-icon">📊</span> <span>Dashboard</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="medicines.html"><span class="nav-icon">💊</span> <span>Medicines</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="suppliers.html"><span class="nav-icon">🏢</span> <span>Suppliers</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="batches.html"><span class="nav-icon">📦</span> <span>Batches</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="dispense.html"><span class="nav-icon">⚖️</span> <span>FEFO Dispense</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="expiry.html"><span class="nav-icon">⏳</span> <span>Expiry Alerts</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="temperature.html"><span class="nav-icon">🌡️</span> <span>Cold-Chain Temp</span></a>
+        </li>
+        <li class="nav-item active">
+          <a href="verification.html"><span class="nav-icon">🛡️</span> <span>Batch Verification</span></a>
+        </li>
+      </ul>
+      <div class="sidebar-footer">
+        <span class="status-dot"></span> System Connected (Spring Boot 3)
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-wrapper">
+      <header class="top-header">
+        <div class="page-headline">
+          <h1>Anti-Counterfeit Batch Verification Portal</h1>
+          <p>Authenticate manufacturer credentials, verify supply chain provenance, and prevent counterfeit drug infiltration</p>
+        </div>
+      </header>
+
+      <main class="content-body">
+        <div style="max-width: 800px; margin: 0 auto;">
+          <!-- Verification Lookup Box -->
+          <div class="panel">
+            <div class="panel-header">
+              <h2 class="panel-title">🛡️ Scan / Lookup Batch Authenticity</h2>
+            </div>
+            <div class="panel-body">
+              <form id="verify-form" onsubmit="handleVerificationLookup(event)">
+                <div class="form-group">
+                  <label class="form-label">Enter Batch Identification Number <span class="required">*</span></label>
+                  <div style="display:flex; gap:12px;">
+                    <input type="text" id="verify-batch-number" class="form-control" placeholder="e.g. BATCH001, BATCH-PCM-001, BATCH-AMX-999" required style="font-size:16px; font-weight:600; text-transform:uppercase;">
+                    <button type="submit" class="btn btn-primary" id="verify-search-btn" style="padding:10px 24px;">
+                      🔍 Verify Batch
+                    </button>
+                  </div>
+                  <div class="form-help">
+                    Try sample batches: <code>BATCH001</code> (Verified), <code>BATCH-AMX-999</code> (Unverified), <code>BATCH-SUSPECT-04</code> (Rejected), or <code>FAKE999</code> (Not Found).
+                  </div>
+                </div>
+              </form>
+
+              <!-- Dynamic Verification Result Card -->
+              <div id="verification-result-area" style="display:none; margin-top:24px;">
+                <!-- Filled dynamically by JavaScript -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Inspection Ledger Panel -->
+          <div class="panel" style="margin-top:24px;">
+            <div class="panel-header">
+              <h2 class="panel-title">📝 Unverified & Suspect Batches Awaiting Pharmacist Review</h2>
+              <button class="btn btn-secondary btn-sm" onclick="loadPendingBatches()">🔄 Refresh List</button>
+            </div>
+            <div class="panel-body no-padding">
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Batch Number</th>
+                      <th>Medicine</th>
+                      <th>Supplier</th>
+                      <th>Units</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="pending-tbody">
+                    <tr><td colspan="6" style="text-align:center; padding:20px;">Scanning for pending batches...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    let currentResultData = null;
+
+    async function handleVerificationLookup(e) {
+      if (e) e.preventDefault();
+      const batchNum = document.getElementById('verify-batch-number').value.trim().toUpperCase();
+      if (!batchNum) return;
+
+      const btn = document.getElementById('verify-search-btn');
+      btn.disabled = true;
+      btn.innerText = 'Searching...';
+
+      try {
+        const res = await API.verifyBatch({ batchNumber: batchNum });
+        currentResultData = res.data;
+        renderResult(currentResultData);
+      } catch (err) {
+        // Handled by API client
+      } finally {
+        btn.disabled = false;
+        btn.innerText = '🔍 Verify Batch';
+      }
+    }
+
+    function renderResult(data) {
+      const area = document.getElementById('verification-result-area');
+      area.style.display = 'block';
+
+      if (!data.exists) {
+        area.innerHTML = `
+          <div class="verification-result-box not-found">
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+              <div style="font-size:32px;">❓</div>
+              <div>
+                <h3 style="color:var(--gray-900); font-size:18px; margin-bottom:2px;">BATCH NOT FOUND</h3>
+                <div style="color:var(--gray-600); font-size:13px;">Unknown or unrecorded pharmaceutical batch.</div>
+              </div>
+            </div>
+            <p style="color:var(--gray-700); font-size:14px; margin-bottom:14px;">
+              Batch <strong>"${data.batchNumber}"</strong> was not found in the verified hospital repository. 
+              This product may be counterfeit, unapproved, or mislabeled. Dispensing is strictly forbidden.
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      let boxClass = 'unverified';
+      let icon = '⚠️';
+      let statusTitle = 'UNVERIFIED BATCH';
+      let titleColor = 'var(--warning)';
+
+      if (data.status === 'VERIFIED') {
+        boxClass = 'verified';
+        icon = '✅';
+        statusTitle = 'VERIFIED AUTHENTIC BATCH';
+        titleColor = 'var(--success)';
+      } else if (data.status === 'REJECTED') {
+        boxClass = 'rejected';
+        icon = '⛔';
+        statusTitle = 'REJECTED / SUSPECT BATCH';
+        titleColor = 'var(--danger)';
+      }
+
+      area.innerHTML = `
+        <div class="verification-result-box ${boxClass}">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; border-bottom:1px solid rgba(0,0,0,0.08); padding-bottom:12px;">
+            <div style="display:flex; align-items:center; gap:12px;">
+              <span style="font-size:32px;">${icon}</span>
+              <div>
+                <h3 style="color:${titleColor}; font-size:18px; font-weight:800;">${statusTitle}</h3>
+                <div style="font-size:12px; color:var(--gray-600);">Batch Number: <strong>${data.batchNumber}</strong></div>
+              </div>
+            </div>
+            <div>
+              ${getVerificationBadge(data.status)}
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px; font-size:14px;">
+            <div><strong>Medicine Brand:</strong> ${data.medicineName}</div>
+            <div><strong>Manufacturer:</strong> ${data.manufacturer}</div>
+            <div><strong>Certified Supplier:</strong> ${data.supplierName}</div>
+            <div><strong>Expiry Date:</strong> ${formatDate(data.expiryDate)}</div>
+            <div><strong>Physical Inventory:</strong> ${data.currentQuantity} units available</div>
+          </div>
+
+          <div style="background:rgba(255,255,255,0.7); border-radius:6px; padding:12px; font-size:13px; margin-bottom:18px;">
+            <strong>System Notice:</strong> ${data.message}
+          </div>
+
+          <div style="display:flex; gap:12px; justify-content:flex-end;">
+            <button class="btn btn-success" onclick="applyVerificationAction('${data.batchNumber}', 'VERIFY')">
+              ✅ Mark as VERIFIED
+            </button>
+            <button class="btn btn-danger" onclick="applyVerificationAction('${data.batchNumber}', 'REJECT')">
+              🛑 Mark as REJECTED
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    async function applyVerificationAction(batchNum, action) {
+      try {
+        const res = await API.verifyBatch({
+          batchNumber: batchNum,
+          action: action,
+          notes: `Updated by pharmacy staff to ${action}`
+        });
+
+        showToast(`Batch '${batchNum}' status updated to ${action}!`, 'success');
+        currentResultData = res.data;
+        renderResult(currentResultData);
+        loadPendingBatches();
+      } catch (err) {
+        // Handled by API client
+      }
+    }
+
+    async function loadPendingBatches() {
+      try {
+        const res = await API.getBatches();
+        const batches = res.data;
+        const pending = batches.filter(b => b.verificationStatus === 'UNVERIFIED' || b.verificationStatus === 'REJECTED');
+        const tbody = document.getElementById('pending-tbody');
+
+        if (pending.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:20px; color:var(--success);">All registered batches are currently verified!</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = pending.map(b => `
+          <tr>
+            <td><strong>${b.batchNumber}</strong></td>
+            <td>${b.medicine ? b.medicine.name : '-'}</td>
+            <td>${b.supplier ? b.supplier.supplierName : '-'}</td>
+            <td><strong>${b.quantity}</strong></td>
+            <td>${getVerificationBadge(b.verificationStatus)}</td>
+            <td>
+              <button class="btn btn-secondary btn-sm" onclick="lookupSpecificBatch('${b.batchNumber}')">
+                Inspect / Action →
+              </button>
+            </td>
+          </tr>
+        `).join('');
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function lookupSpecificBatch(batchNum) {
+      document.getElementById('verify-batch-number').value = batchNum;
+      handleVerificationLookup();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadPendingBatches();
+    });
+  </script>
+</body>
+</html>

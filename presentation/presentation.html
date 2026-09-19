@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Pharmacy Supply Chain System — Academic Presentation</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Progress Bar -->
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- Main Presentation Container -->
+  <main class="presentation-container">
+
+    <!-- ===================================================================
+         SLIDE 1: TITLE SLIDE
+         =================================================================== -->
+    <section class="slide title-slide active" id="slide-1">
+      <span class="title-badge-top">Final Year Capstone Project Presentation</span>
+      <h1 class="main-title">Smart Pharmacy Supply Chain System</h1>
+      <p class="main-subtitle">Digital Medicine Batch Tracking, FEFO Dispensing & Cold-Chain Monitoring</p>
+      
+      <div class="title-meta-grid">
+        <div class="title-meta-card">
+          <h4>Student Details</h4>
+          <p><strong>Student 1:</strong> Shudiksha Sugeerthanaa (Reg: 44731123)</p>
+          <p><strong>Student 2:</strong> Sofiya S (Reg: 44731112)</p>
+          <p><strong>Team ID:</strong> CSE-AI-CAP-2026</p>
+        </div>
+        <div class="title-meta-card">
+          <h4>Academic Details</h4>
+          <p><strong>Department:</strong> B.E. Computer Science & Engineering (AI)</p>
+          <p><strong>Institution:</strong> Sathyabama Institute of Science and Technology (SIST)</p>
+          <p><strong>Academic Year:</strong> 2026 – 2027</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 2: INTRODUCTION & INDUSTRY DOMAIN
+         =================================================================== -->
+    <section class="slide" id="slide-2">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Introduction & Domain</div>
+          <h2 class="slide-title">What is a Pharmacy Supply Chain?</h2>
+        </div>
+        <span class="slide-badge">Slide 2 / 20</span>
+      </div>
+      <div class="slide-content">
+        <div class="highlight-box">
+          A pharmacy supply chain is the step-by-step process of how medicines travel safely from pharmaceutical manufacturers to hospital pharmacies and patients.
+        </div>
+        <div class="grid-3" style="margin-top: 10px;">
+          <div class="card">
+            <div class="card-title"><span class="icon">🏭</span> 1. Manufacturer</div>
+            <div class="card-body">
+              Produces pharmaceutical drugs in discrete batches with fixed manufacturing and expiry dates.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="icon">🚚</span> 2. Distributor / Supplier</div>
+            <div class="card-body">
+              Transports medicine boxes to hospitals while maintaining safe temperature standards.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="icon">🏥</span> 3. Hospital Pharmacy</div>
+            <div class="card-body">
+              Stores stock safely, checks expiry, and dispenses the right medicine batch to patients.
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 12px;">
+          <h3 style="font-size: 15px; margin-bottom: 8px; color: var(--text-main);">Why is Proper Tracking Important?</h3>
+          <ul class="clean-list">
+            <li><strong>Patient Safety:</strong> Patients must never receive an expired, compromised, or counterfeit drug.</li>
+            <li><strong>Drug Potency:</strong> Temperature-sensitive medicines like Insulin lose strength if stored in the wrong temperature.</li>
+            <li><strong>Preventing Losses:</strong> Using medicines in the correct order prevents medicines from expiring on pharmacy shelves.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 3: PROBLEM STATEMENT & REAL-WORLD INEFFICIENCIES
+         =================================================================== -->
+    <section class="slide" id="slide-3">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Problem Statement</div>
+          <h2 class="slide-title">Real-World Pharmacy Inefficiencies</h2>
+        </div>
+        <span class="slide-badge">Slide 3 / 20</span>
+      </div>
+      <div class="slide-content">
+        <p>Hospital pharmacies face 5 major practical challenges that cause medical and financial losses:</p>
+        <div class="grid-2" style="margin-top: 6px;">
+          <div class="card">
+            <div class="card-title"><span class="icon">⏳</span> 1. High Medicine Expiry Wastage</div>
+            <div class="card-body">
+              Medicines often sit unnoticed in storage racks and expire before staff realizes they need to be used.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="icon">❌</span> 2. Random Dispensing Order</div>
+            <div class="card-body">
+              Staff naturally pick the newest boxes in front, leaving older batches behind to expire unnoticed.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="icon">🌡️</span> 3. Unmonitored Cold-Chain Storage</div>
+            <div class="card-body">
+              Medicines like Insulin or Vaccines spoil if refrigerators get too warm, but temperature checks are rarely automated.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="icon">🛡️</span> 4. Counterfeit Medicine Risks</div>
+            <div class="card-body">
+              Unverified or fake medicine batches can enter the hospital supply chain without a quick verification tool.
+            </div>
+          </div>
+        </div>
+        <div class="card" style="margin-top: 4px;">
+          <div class="card-title"><span class="icon">📝</span> 5. Manual Inventory Errors</div>
+          <div class="card-body">
+            Paper-based stock logs lead to human counting mistakes, stock-outs during emergencies, and missing batches.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 4: EXISTING SYSTEM & INHERENT BOTTLENECK
+         =================================================================== -->
+    <section class="slide" id="slide-4">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Existing System</div>
+          <h2 class="slide-title">The Traditional Manual Approach</h2>
+        </div>
+        <span class="slide-badge">Slide 4 / 20</span>
+      </div>
+      <div class="slide-content">
+        <div class="highlight-box">
+          Most small and medium pharmacies still rely on paper registers or basic Excel spreadsheets.
+        </div>
+        <table class="presentation-table" style="margin-top: 10px;">
+          <thead>
+            <tr>
+              <th style="width: 25%;">Pharmacy Task</th>
+              <th style="width: 40%;">Existing Manual Method</th>
+              <th style="width: 35%;">Major Bottleneck / Risk</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Stock Recording</strong></td>
+              <td>Writing medicine entries by hand in paper books.</td>
+              <td>Handwriting errors, lost pages, slow searches.</td>
+            </tr>
+            <tr>
+              <td><strong>Expiry Tracking</strong></td>
+              <td>Staff manually read tiny printed dates on boxes every month.</td>
+              <td>Easy to miss boxes; expired stock given to patients.</td>
+            </tr>
+            <tr>
+              <td><strong>Medicine Dispensing</strong></td>
+              <td>Pharmacist grabs whichever bottle is nearest on shelf.</td>
+              <td>Violates FEFO; older stock expires on the shelf.</td>
+            </tr>
+            <tr>
+              <td><strong>Temperature Checks</strong></td>
+              <td>Manual thermometer readings logged on a clipboard.</td>
+              <td>No instant alerts when a refrigerator fails at night.</td>
+            </tr>
+            <tr>
+              <td><strong>Batch Verification</strong></td>
+              <td>Phone calls or paper invoice checks with suppliers.</td>
+              <td>Slow process; counterfeit drugs cannot be caught fast.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 5: PROPOSED SYSTEM (OUR 3-TIER SOLUTION)
+         =================================================================== -->
+    <section class="slide" id="slide-5">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Proposed Solution</div>
+          <h2 class="slide-title">Our Centralized 3-Tier System</h2>
+        </div>
+        <span class="slide-badge">Slide 5 / 20</span>
+      </div>
+      <div class="slide-content">
+        <p>We built a clean, centralized web application that automates pharmacy operations in 3 simple tiers:</p>
+        
+        <div class="step-flow" style="margin: 16px 0;">
+          <div class="step-box">
+            <div class="step-num">Tier 1: Frontend</div>
+            <div class="step-text">HTML5 / CSS3 / Vanilla JS</div>
+            <p style="font-size: 11px; color: var(--text-light); margin-top: 4px;">Clean UI screen staff uses</p>
+          </div>
+          <div class="step-arrow">➔</div>
+          <div class="step-box">
+            <div class="step-num">Tier 2: Backend</div>
+            <div class="step-text">Java Spring Boot 3 REST API</div>
+            <p style="font-size: 11px; color: var(--text-light); margin-top: 4px;">Executes FEFO & check logic</p>
+          </div>
+          <div class="step-arrow">➔</div>
+          <div class="step-box">
+            <div class="step-num">Tier 3: Database</div>
+            <div class="step-text">MySQL 8.0 Relational DB</div>
+            <p style="font-size: 11px; color: var(--text-light); margin-top: 4px;">Safely stores all pharmacy data</p>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top: 10px;">
+          <div class="card">
+            <div class="card-title"><span class="icon">✨</span> What Our System Does Automatically</div>
+            <ul class="clean-list">
+              <li>Picks the earliest expiring batch automatically when dispensing (FEFO).</li>
+              <li>Calculates expiry alerts at 90, 60, and 30 days before expiry.</li>
+              <li>Locks expired and rejected batches so they cannot be dispensed.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="icon">🛡️</span> Key Safety Guarantees</div>
+            <ul class="clean-list">
+              <li>Instantly flags cold-chain temperature readings that are outside safety limits.</li>
+              <li>Checks batch numbers against authentic records to stop counterfeit drugs.</li>
+              <li>Keeps an itemized digital receipt for every medicine dispensed.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 6: PROJECT OBJECTIVES (SMART GOALS)
+         =================================================================== -->
+    <section class="slide" id="slide-6">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Objectives</div>
+          <h2 class="slide-title">SMART Project Objectives</h2>
+        </div>
+        <span class="slide-badge">Slide 6 / 20</span>
+      </div>
+      <div class="slide-content">
+        <p>Our project was developed with clear, measurable goals designed for real hospital pharmacies:</p>
+        <div class="grid-2" style="margin-top: 8px;">
+          <div class="card">
+            <div class="card-title"><span class="icon">🎯</span> 1. Digital Batch Tracking</div>
+            <div class="card-body">
+              Track every physical batch with unique batch number, medicine name, manufacturer, supplier, and expiry date.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="icon">⚖️</span> 2. Strict FEFO Dispensing</div>
+            <div class="card-body">
+              Enforce 100% First-Expired-First-Out dispensing logic so older authentic batches are always issued first.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="icon">⏳</span> 3. Multi-Tier Expiry Radar</div>
+            <div class="card-body">
+              Categorize inventory into Expired, 30-day (Critical), 60-day (Warning), and 90-day (Notice) alert windows.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="icon">🌡️</span> 4. Cold-Chain Compliance Checking</div>
+            <div class="card-body">
+              Validate thermal sensor readings against medicine temperature ranges (e.g. 2°C to 8°C for Insulin).
+            </div>
+          </div>
+        </div>
+        <div class="card" style="margin-top: 4px;">
+          <div class="card-title"><span class="icon">🛡️</span> 5. Anti-Counterfeit Batch Verification</div>
+          <div class="card-body">
+            Verify whether a batch is VERIFIED, UNVERIFIED, REJECTED, or NOT FOUND with 1-click verify and reject actions.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 7: KEY FUNCTIONAL FEATURES IMPLEMENTED
+         =================================================================== -->
+    <section class="slide" id="slide-7">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Features</div>
+          <h2 class="slide-title">8 Key Features Implemented</h2>
+        </div>
+        <span class="slide-badge">Slide 7 / 20</span>
+      </div>
+      <div class="slide-content">
+        <div class="grid-4">
+          <div class="card">
+            <div class="card-title"><span class="icon">💊</span> 1. Medicines</div>
+            <div class="card-body">Add and edit catalog drugs with brand name, dosage, and min/max temperature limits.</div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="icon">🏢</span> 2. Suppliers</div>
+            <div class="card-body">Maintain verified manufacturer and vendor contacts, phones, and warehouse addresses.</div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="icon">📦</span> 3. Batches</div>
+            <div class="card-body">Track discrete batches with unique IDs, quantities, and manufacturing & expiry dates.</div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="icon">⚖️</span> 4. FEFO Dispense</div>
+            <div class="card-body">Core engine: automatically selects earliest expiring batch and updates stock balances.</div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="icon">⏳</span> 5. Expiry Radar</div>
+            <div class="card-body">Alerts tab filtering batches into Expired, 30 days, 60 days, and 90 days remaining.</div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="icon">🌡️</span> 6. Temp Logger</div>
+            <div class="card-body">Evaluates sensor readings: flags COMPLIANT or OUT_OF_RANGE with diagnostic alerts.</div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="icon">🛡️</span> 7. Verification</div>
+            <div class="card-body">Scans batch numbers to detect counterfeit drugs with 1-click Verify/Reject controls.</div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="icon">📊</span> 8. Dashboard</div>
+            <div class="card-body">5 live KPI summary counters and 3 real-time alert tables without heavy charts.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 8: TECHNOLOGY STACK
+         =================================================================== -->
+    <section class="slide" id="slide-8">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Tech Stack</div>
+          <h2 class="slide-title">Technology Stack Breakdown</h2>
+        </div>
+        <span class="slide-badge">Slide 8 / 20</span>
+      </div>
+      <div class="slide-content">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title"><span class="icon">💻</span> Frontend (Client Tier)</div>
+            <ul class="clean-list" style="margin-top: 8px;">
+              <li><strong>HTML5:</strong> Semantic layout structure (`&lt;header&gt;`, `&lt;nav&gt;`, `&lt;main&gt;`, `&lt;table&gt;`).</li>
+              <li><strong>CSS3:</strong> Custom clinical design system using CSS Grid & Flexbox (no Tailwind, no Bootstrap).</li>
+              <li><strong>Vanilla JavaScript (ES6+):</strong> Clean browser logic without heavy React or Angular dependencies.</li>
+              <li><strong>Fetch API:</strong> Asynchronous JSON HTTP calls connecting to the backend.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="icon">⚙️</span> Backend (Application Tier)</div>
+            <ul class="clean-list" style="margin-top: 8px;">
+              <li><strong>Java 17:</strong> Modern, secure, object-oriented programming language.</li>
+              <li><strong>Spring Boot 3:</strong> Lightweight, production-ready framework for REST APIs.</li>
+              <li><strong>Spring Data JPA:</strong> Hibernate ORM for safe, boilerplate-free database operations.</li>
+              <li><strong>Bean Validation:</strong> Validates clean inputs (`@NotNull`, `@NotBlank`, `@Positive`).</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top: 10px;">
+          <div class="card">
+            <div class="card-title"><span class="icon">🗄️</span> Database (Storage Tier)</div>
+            <div class="card-body">
+              <strong>MySQL 8.0:</strong> Robust relational database engine managing 3NF normalized tables with foreign keys and unique constraints. (Includes local H2 fallback for instant viva demonstration).
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="icon">🛠️</span> Developer & Testing Tools</div>
+            <div class="card-body">
+              <strong>Antigravity IDE / VS Code:</strong> Code editing & debugging.<br>
+              <strong>Apache Maven:</strong> Dependency & build management.<br>
+              <strong>Postman:</strong> REST API endpoint testing.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 9: 3-TIER SYSTEM ARCHITECTURE & MULTI-PORT DATA FLOW
+         =================================================================== -->
+    <section class="slide" id="slide-9">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">System Architecture</div>
+          <h2 class="slide-title">3-Tier Architecture & Multi-Port Data Flow</h2>
+        </div>
+        <span class="slide-badge">Slide 9 / 20</span>
+      </div>
+      <div class="slide-content">
+        <p>The system follows a strict, industry-standard 3-tier architecture with dedicated network ports:</p>
+        
+        <div style="background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px; padding: 20px; text-align: center; margin: 10px 0;">
+          <div style="display: flex; align-items: center; justify-content: space-around;">
+            <div style="background: #f8fafc; border: 2px solid var(--accent); padding: 14px 20px; border-radius: 8px; width: 220px;">
+              <strong style="color: var(--accent); font-size: 15px;">TIER 1: FRONTEND</strong><br>
+              <span style="font-size: 12px; color: var(--text-muted);">Web Browser</span><br>
+              <span class="badge badge-info" style="margin-top: 4px;">Port :5500 / Browser</span>
+            </div>
+            
+            <div style="font-size: 24px; font-weight: bold; color: var(--primary);">⇄</div>
+            
+            <div style="background: #f0fdfa; border: 2px solid var(--primary); padding: 14px 20px; border-radius: 8px; width: 260px;">
+              <strong style="color: var(--primary); font-size: 15px;">TIER 2: BACKEND</strong><br>
+              <span style="font-size: 12px; color: var(--text-muted);">Spring Boot 3 REST Server</span><br>
+              <span class="badge badge-pass" style="margin-top: 4px;">Port :8080 (Tomcat)</span>
+            </div>
+            
+            <div style="font-size: 24px; font-weight: bold; color: var(--primary);">⇄</div>
+            
+            <div style="background: #fefce8; border: 2px solid var(--warning); padding: 14px 20px; border-radius: 8px; width: 220px;">
+              <strong style="color: var(--warning); font-size: 15px;">TIER 3: DATABASE</strong><br>
+              <span style="font-size: 12px; color: var(--text-muted);">MySQL 8.0 Relational DB</span><br>
+              <span class="badge badge-warn" style="margin-top: 4px;">Port :3306 (TCP/IP)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <strong>Step-by-Step Data Flow:</strong><br>
+          Pharmacy Staff clicks 'Dispense' on screen ➔ Frontend sends JSON to Backend (Port 8080) ➔ Spring Boot checks FEFO rules and executes SQL on MySQL (Port 3306) ➔ MySQL returns updated records ➔ Frontend displays the instant receipt!
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 10: APPLICATION MODULES BREAKDOWN
+         =================================================================== -->
+    <section class="slide" id="slide-10">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Modules</div>
+          <h2 class="slide-title">Application Modules Breakdown</h2>
+        </div>
+        <span class="slide-badge">Slide 10 / 20</span>
+      </div>
+      <div class="slide-content">
+        <table class="presentation-table">
+          <thead>
+            <tr>
+              <th style="width: 25%;">Module Name</th>
+              <th style="width: 20%;">Web Page File</th>
+              <th style="width: 55%;">Single-Sentence Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>1. Dashboard</strong></td>
+              <td><code>index.html</code></td>
+              <td>Displays 5 quick summary numbers and recent alert tables at a single glance.</td>
+            </tr>
+            <tr>
+              <td><strong>2. Medicines</strong></td>
+              <td><code>medicines.html</code></td>
+              <td>Allows staff to register, update, and search medicines and their safe storage temperature limits.</td>
+            </tr>
+            <tr>
+              <td><strong>3. Suppliers</strong></td>
+              <td><code>suppliers.html</code></td>
+              <td>Stores certified manufacturer contact details, emails, and physical warehouse addresses.</td>
+            </tr>
+            <tr>
+              <td><strong>4. Batches</strong></td>
+              <td><code>batches.html</code></td>
+              <td>Tracks discrete medicine batches with unique batch numbers, stock count, and expiry dates.</td>
+            </tr>
+            <tr>
+              <td><strong>5. FEFO Dispense</strong></td>
+              <td><code>dispense.html</code></td>
+              <td>Automatically selects and deducts from the earliest-expiring verified batch to prevent wastage.</td>
+            </tr>
+            <tr>
+              <td><strong>6. Expiry Alerts</strong></td>
+              <td><code>expiry.html</code></td>
+              <td>Groups inventory into Expired, 30-day, 60-day, and 90-day alert tabs so near-expiry stock is quarantined.</td>
+            </tr>
+            <tr>
+              <td><strong>7. Temperature Logger</strong></td>
+              <td><code>temperature.html</code></td>
+              <td>Logs thermal sensor readings and checks if cold-chain medicine temperatures stay within safe limits.</td>
+            </tr>
+            <tr>
+              <td><strong>8. Batch Verification</strong></td>
+              <td><code>verification.html</code></td>
+              <td>Looks up batch authenticity and lets pharmacists mark suspect stock as VERIFIED or REJECTED.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 11: DATABASE DESIGN
+         =================================================================== -->
+    <section class="slide" id="slide-11">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Database Design</div>
+          <h2 class="slide-title">Normalized MySQL 3NF Database Structure</h2>
+        </div>
+        <span class="slide-badge">Slide 11 / 20</span>
+      </div>
+      <div class="slide-content">
+        <div class="highlight-box">
+          The database is normalized to <strong>Third Normal Form (3NF)</strong>. This avoids repeating data and guarantees that every table has a Primary Key and clean Foreign Keys.
+        </div>
+        <div class="grid-2" style="margin-top: 10px;">
+          <div class="card">
+            <div class="card-title"><code>medicines</code> Table</div>
+            <div class="card-body">
+              <strong>Columns:</strong> id (PK), name (UNIQUE), generic_name, category, dosage, min_temperature, max_temperature, created_at.<br>
+              <em>Purpose:</em> Stores the official drug catalog and storage rules.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title"><code>suppliers</code> Table</div>
+            <div class="card-body">
+              <strong>Columns:</strong> id (PK), supplier_name (UNIQUE), contact_person, phone, email, address, created_at.<br>
+              <em>Purpose:</em> Stores authorized distributor credentials.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title"><code>batches</code> Table</div>
+            <div class="card-body">
+              <strong>Columns:</strong> id (PK), batch_number (UNIQUE), medicine_id (FK), supplier_id (FK), manufacturer, manufacturing_date, expiry_date, quantity, storage_requirement, verification_status.<br>
+              <em>Purpose:</em> Physical inventory ledger used for FEFO sorting.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title"><code>temperature_logs</code> Table</div>
+            <div class="card-body">
+              <strong>Columns:</strong> id (PK), batch_id (FK), recorded_temperature, recorded_at, compliance_status, notes.<br>
+              <em>Purpose:</em> Stores cold-chain temperature readings.
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 10px; font-size: 13px; color: var(--text-main); background: #f8fafc; padding: 8px 14px; border-radius: 6px; border: 1px solid var(--border-color);">
+          <strong>Simple Relationships:</strong> 1 Medicine ➔ has many Batches | 1 Supplier ➔ provides many Batches | 1 Batch ➔ has many Temperature Logs
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 12: DATA FLOW DIAGRAMS (LEVEL 0 & LEVEL 1)
+         =================================================================== -->
+    <section class="slide" id="slide-12">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">System Modeling</div>
+          <h2 class="slide-title">Data Flow Diagrams (Level 0 & Level 1)</h2>
+        </div>
+        <span class="slide-badge">Slide 12 / 20</span>
+      </div>
+      <div class="slide-content">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title"><span class="icon">🔄</span> DFD Level 0 (Context Level)</div>
+            <div class="card-body" style="padding-top: 10px;">
+              <div style="border: 1px dashed var(--primary); padding: 16px; border-radius: 8px; text-align: center;">
+                <div style="font-weight: bold; color: var(--accent);">Pharmacy Staff / Admin</div>
+                <div style="font-size: 16px; margin: 6px 0;">⇅ Inputs & Requests</div>
+                <div style="background: var(--primary-light); border: 2px solid var(--primary); border-radius: 6px; padding: 10px; font-weight: bold; color: var(--primary);">
+                  [0.0] Smart Pharmacy Supply Chain System
+                </div>
+                <div style="font-size: 16px; margin: 6px 0;">⇅ SQL Reads / Writes</div>
+                <div style="font-weight: bold; color: var(--warning);">MySQL 8.0 Database</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title"><span class="icon">⚙️</span> DFD Level 1 (Major Processes)</div>
+            <div class="card-body">
+              <ul class="clean-list" style="gap: 6px;">
+                <li><strong>1.0 Manage Drugs:</strong> Add/Update drug names & temperature rules.</li>
+                <li><strong>2.0 Manage Suppliers:</strong> Add/Update certified vendor information.</li>
+                <li><strong>3.0 Manage Batches:</strong> Record physical batch number, mfg & exp date.</li>
+                <li><strong>4.0 FEFO Dispensing:</strong> Query earliest verified batch & deduct stock.</li>
+                <li><strong>5.0 Verify Batch:</strong> Authenticate batch & mark VERIFIED or REJECTED.</li>
+                <li><strong>6.0 Cold-Chain Monitor:</strong> Compare sensor reading with drug thresholds.</li>
+                <li><strong>7.0 Expiry Radar:</strong> Group active inventory by days remaining.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 13: END-TO-END USER JOURNEY / WORKFLOW
+         =================================================================== -->
+    <section class="slide" id="slide-13">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">User Workflow</div>
+          <h2 class="slide-title">End-to-End Pharmacy Workflow & FEFO Example</h2>
+        </div>
+        <span class="slide-badge">Slide 13 / 20</span>
+      </div>
+      <div class="slide-content">
+        <p>The system guides the pharmacy staff through 8 clear, sequential steps:</p>
+        <div class="step-flow" style="margin: 8px 0; font-size: 11px;">
+          <div class="step-box"><div class="step-num">1</div><div class="step-text">Add Medicine</div></div>
+          <div class="step-arrow">➔</div>
+          <div class="step-box"><div class="step-num">2</div><div class="step-text">Add Supplier</div></div>
+          <div class="step-arrow">➔</div>
+          <div class="step-box"><div class="step-num">3</div><div class="step-text">Add Batch</div></div>
+          <div class="step-arrow">➔</div>
+          <div class="step-box"><div class="step-num">4</div><div class="step-text">Verify Batch</div></div>
+          <div class="step-arrow">➔</div>
+          <div class="step-box"><div class="step-num">5</div><div class="step-text">Log Temp</div></div>
+          <div class="step-arrow">➔</div>
+          <div class="step-box"><div class="step-num">6</div><div class="step-text">Check Expiry</div></div>
+          <div class="step-arrow">➔</div>
+          <div class="step-box"><div class="step-num">7</div><div class="step-text">FEFO Dispense</div></div>
+          <div class="step-arrow">➔</div>
+          <div class="step-box"><div class="step-num">8</div><div class="step-text">Stock Updates</div></div>
+        </div>
+
+        <div class="card" style="margin-top: 10px; background: var(--primary-light); border-color: var(--primary-border);">
+          <div class="card-title" style="color: var(--primary);"><span class="icon">⚖️</span> Easy FEFO Concept Explained</div>
+          <div class="card-body" style="font-size: 14px; color: var(--text-main);">
+            <strong>FEFO Rule:</strong> <em>"The batch that expires first must be used first."</em>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 8px;">
+              <div style="background: #ffffff; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color);">
+                <strong>Batch A:</strong> Expires <strong>10-October-2026</strong> (Qty: 20)<br>
+                <span class="badge badge-pass" style="margin-top: 4px;">Selected 1st (Earliest Expiry)</span>
+              </div>
+              <div style="background: #ffffff; padding: 10px; border-radius: 6px; border: 1px solid var(--border-color);">
+                <strong>Batch B:</strong> Expires <strong>15-December-2026</strong> (Qty: 40)<br>
+                <span class="badge badge-info" style="margin-top: 4px;">Selected 2nd (Expires Later)</span>
+              </div>
+            </div>
+            <p style="margin-top: 8px; font-size: 13px;">
+              When dispensing 10 units of Paracetamol, our system automatically deducts 10 from Batch A and leaves Batch B untouched.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 14: FRONTEND INTERFACE & RESPONSIVE VIEWS
+         =================================================================== -->
+    <section class="slide" id="slide-14">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Frontend Design</div>
+          <h2 class="slide-title">Accessible Forms & Clean User Interface</h2>
+        </div>
+        <span class="slide-badge">Slide 14 / 20</span>
+      </div>
+      <div class="slide-content">
+        <p>The user interface is built with Vanilla HTML5 and CSS3 to ensure clean readability on any projector or screen:</p>
+        <div class="grid-3" style="margin-top: 8px;">
+          <div class="card">
+            <div class="card-title"><span class="icon">🧭</span> Fixed Navigation</div>
+            <div class="card-body">
+              A clean left sidebar gives staff quick 1-click access to all 8 pharmacy sections without getting lost.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="icon">📱</span> Fully Responsive</div>
+            <div class="card-body">
+              CSS Grid and Flexbox automatically adapt from 360px mobile viewports to 1920px widescreen clinic desktops.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="icon">🏷️</span> Clear Visual Badges</div>
+            <div class="card-body">
+              Color-coded tags (Green for Verified, Amber for Unverified, Red for Out-of-Range or Rejected) guide quick clinical decisions.
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top: 10px;">
+          <div class="card">
+            <div class="card-title"><span class="icon">🧾</span> Real-Time FEFO Receipt Card</div>
+            <div class="card-body">
+              Immediately after clicking Dispense, the screen displays a dashed receipt card showing the exact batch number used and how many units remain.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="icon">🔔</span> Non-Intrusive Toast Alerts</div>
+            <div class="card-body">
+              Success and warning messages pop up at the top right for 4 seconds, confirming actions without disruptive browser alert boxes.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 15: JAVA BACKEND ENGINE ARCHITECTURE
+         =================================================================== -->
+    <section class="slide" id="slide-15">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Backend Architecture</div>
+          <h2 class="slide-title">Controller, Service & Repository Layers</h2>
+        </div>
+        <span class="slide-badge">Slide 15 / 20</span>
+      </div>
+      <div class="slide-content">
+        <p>The Java Spring Boot backend separates code into 3 distinct responsibilities:</p>
+        
+        <div class="step-flow" style="margin: 12px 0;">
+          <div class="step-box" style="border-color: var(--accent);">
+            <div class="step-num" style="color: var(--accent);">1. Controller Layer</div>
+            <div class="step-text">@RestController</div>
+            <p style="font-size: 12px; margin-top: 4px;">Receives requests from browser</p>
+          </div>
+          <div class="step-arrow">➔</div>
+          <div class="step-box" style="border-color: var(--primary);">
+            <div class="step-num" style="color: var(--primary);">2. Service Layer</div>
+            <div class="step-text">@Service + @Transactional</div>
+            <p style="font-size: 12px; margin-top: 4px;">Performs FEFO & validation logic</p>
+          </div>
+          <div class="step-arrow">➔</div>
+          <div class="step-box" style="border-color: var(--warning);">
+            <div class="step-num" style="color: var(--warning);">3. Repository Layer</div>
+            <div class="step-text">@Repository (Spring Data JPA)</div>
+            <p style="font-size: 12px; margin-top: 4px;">Executes safe queries on MySQL</p>
+          </div>
+        </div>
+
+        <div class="highlight-box" style="margin-top: 8px;">
+          <strong>Real Execution Example:</strong><br>
+          Staff requests to dispense 10 Paracetamol ➔ <code>DispenseController</code> receives HTTP POST ➔ <code>DispenseServiceImpl</code> calls <code>findAvailableBatchesForFefo</code>, sorts by earliest expiry date, deducts stock, and saves <code>DispenseRecord</code> ➔ Returns clean JSON!
+        </div>
+
+        <div class="card" style="margin-top: 8px;">
+          <div class="card-title"><span class="icon">🛡️</span> Global Exception Handler (@RestControllerAdvice)</div>
+          <div class="card-body">
+            Catches errors automatically: returns <strong>404</strong> if batch not found, <strong>409</strong> if stock is insufficient or duplicate batch is submitted, and <strong>400</strong> for invalid dates.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 16: DATABASE CRUD OPERATIONS
+         =================================================================== -->
+    <section class="slide" id="slide-16">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Database Operations</div>
+          <h2 class="slide-title">Database CRUD Operations via JPA</h2>
+        </div>
+        <span class="slide-badge">Slide 16 / 20</span>
+      </div>
+      <div class="slide-content">
+        <p>The application interacts with MySQL using safe, automated CRUD operations via Spring Data JPA:</p>
+        
+        <table class="presentation-table" style="margin-top: 6px;">
+          <thead>
+            <tr>
+              <th style="width: 15%;">CRUD Action</th>
+              <th style="width: 25%;">Pharmacy Operation</th>
+              <th style="width: 35%;">Java / JPA Execution</th>
+              <th style="width: 25%;">Database Effect</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge badge-pass">C — Create</span></td>
+              <td>Register new medicine or add batch</td>
+              <td><code>medicineRepository.save(medicine)</code></td>
+              <td><code>INSERT INTO medicines ...</code></td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-info">R — Read</span></td>
+              <td>Query batches in FEFO order</td>
+              <td><code>findAvailableBatchesForFefo()</code></td>
+              <td><code>SELECT ... ORDER BY expiry_date ASC</code></td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-warn">U — Update</span></td>
+              <td>Deduct stock; change verification status</td>
+              <td><code>batch.setQuantity(newQty)</code></td>
+              <td><code>UPDATE batches SET quantity = ?</code></td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-fail">D — Delete</span></td>
+              <td>Remove old or canceled records</td>
+              <td><code>medicineRepository.deleteById(id)</code></td>
+              <td><code>DELETE FROM medicines WHERE id = ?</code></td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="highlight-box" style="margin-top: 12px;">
+          <strong>SQL Injection Protection:</strong> All database queries use Spring Data JPA parameterized inputs. No raw SQL strings are concatenated, protecting the hospital pharmacy from SQL injection attacks.
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 17: ACCEPTANCE CRITERIA & TEST RESULTS TABLE
+         =================================================================== -->
+    <section class="slide" id="slide-17">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Testing & Verification</div>
+          <h2 class="slide-title">Acceptance Criteria Verification Results</h2>
+        </div>
+        <span class="slide-badge">Slide 17 / 20</span>
+      </div>
+      <div class="slide-content">
+        <p>Every functional requirement requested for this project was tested and passed directly on the live backend:</p>
+        
+        <table class="presentation-table" style="margin-top: 4px;">
+          <thead>
+            <tr>
+              <th style="width: 28%;">Acceptance Criterion</th>
+              <th style="width: 44%;">Test Performed</th>
+              <th style="width: 16%;">Status Code</th>
+              <th style="width: 12%;">Result</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Track Medicine Batches</strong></td>
+              <td>Added batch with manufacturer, mfg date, exp date, and quantity.</td>
+              <td><code>201 CREATED</code></td>
+              <td><span class="badge badge-pass">PASS</span></td>
+            </tr>
+            <tr>
+              <td><strong>FEFO Dispensing</strong></td>
+              <td>Dispensed Paracetamol: batch expiring in Oct chosen over Dec.</td>
+              <td><code>200 OK</code></td>
+              <td><span class="badge badge-pass">PASS</span></td>
+            </tr>
+            <tr>
+              <td><strong>Multi-Batch Split</strong></td>
+              <td>Dispensed 25 units: 10 units from Batch A, 15 from Batch B.</td>
+              <td><code>200 OK</code></td>
+              <td><span class="badge badge-pass">PASS</span></td>
+            </tr>
+            <tr>
+              <td><strong>Expiry Alert Radar</strong></td>
+              <td>Calculated days remaining into 90d, 60d, 30d, and expired buckets.</td>
+              <td><code>200 OK</code></td>
+              <td><span class="badge badge-pass">PASS</span></td>
+            </tr>
+            <tr>
+              <td><strong>Batch Verification</strong></td>
+              <td>Searched BATCH001 ➔ VERIFIED; searched fake batch ➔ NOT FOUND.</td>
+              <td><code>200 OK</code></td>
+              <td><span class="badge badge-pass">PASS</span></td>
+            </tr>
+            <tr>
+              <td><strong>Cold-Chain Compliance</strong></td>
+              <td>Insulin (2-8°C): 5°C logged COMPLIANT; 12°C logged OUT_OF_RANGE.</td>
+              <td><code>201 CREATED</code></td>
+              <td><span class="badge badge-pass">PASS</span></td>
+            </tr>
+            <tr>
+              <td><strong>Insufficient Stock Block</strong></td>
+              <td>Requested 1,000 units when only 25 units exist in verified stock.</td>
+              <td><code>409 CONFLICT</code></td>
+              <td><span class="badge badge-pass">PASS</span></td>
+            </tr>
+            <tr>
+              <td><strong>Duplicate Batch Block</strong></td>
+              <td>Attempted to insert already existing batch number BATCH-PCM-001.</td>
+              <td><code>409 CONFLICT</code></td>
+              <td><span class="badge badge-pass">PASS</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 18: LIVE WORKING RESULTS & DASHBOARD UI
+         =================================================================== -->
+    <section class="slide" id="slide-18">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Results</div>
+          <h2 class="slide-title">Live Working Results from Implemented System</h2>
+        </div>
+        <span class="slide-badge">Slide 18 / 20</span>
+      </div>
+      <div class="slide-content">
+        <p>The application is live and running on localhost with realistic seeded hospital data:</p>
+        
+        <div class="grid-3" style="margin-top: 6px;">
+          <div class="card" style="border-top: 4px solid var(--primary);">
+            <div class="card-title">📊 Executive Dashboard</div>
+            <div class="card-body">
+              Displays 5 instant KPI counters:
+              <ul class="clean-list" style="margin-top: 4px;">
+                <li>Total Medicines: <strong>5</strong></li>
+                <li>Active Batches: <strong>10</strong></li>
+                <li>Low Stock Items: <strong>4</strong></li>
+                <li>Expiring Soon (&lt;90d): <strong>4</strong></li>
+                <li>Expired Batches: <strong>1</strong></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card" style="border-top: 4px solid var(--accent);">
+            <div class="card-title">🧾 FEFO Dispense Console</div>
+            <div class="card-body">
+              Shows live preview queue of available verified batches. When staff dispenses, it generates a real-time transaction receipt showing remaining balances.
+            </div>
+          </div>
+
+          <div class="card" style="border-top: 4px solid var(--warning);">
+            <div class="card-title">🌡️ Cold-Chain Monitor</div>
+            <div class="card-body">
+              Thermal audit simulator tests live sensor temperatures against drug limits and displays red alert badges for out-of-range violations.
+            </div>
+          </div>
+        </div>
+
+        <div class="highlight-box" style="margin-top: 10px;">
+          <strong>Verified API Test:</strong> Executed live curl and PowerShell REST tests verifying all 6 endpoints (`/api/dispense`, `/api/batches/verify`, `/api/temperature-logs`, `/api/expiry-alerts`, `/api/dashboard/stats`, `/api/medicines`).
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 19: FUTURE ENHANCEMENTS & SCALABILITY ROADMAP
+         =================================================================== -->
+    <section class="slide" id="slide-19">
+      <div class="slide-header">
+        <div>
+          <div class="slide-category">Future Work</div>
+          <h2 class="slide-title">Future Enhancements & Scalability Roadmap</h2>
+        </div>
+        <span class="slide-badge">Slide 19 / 20</span>
+      </div>
+      <div class="slide-content">
+        <div class="highlight-box">
+          <em>Note: These are planned future improvements to expand this academic project for real commercial hospital deployment:</em>
+        </div>
+        
+        <div class="grid-3" style="margin-top: 10px;">
+          <div class="card">
+            <div class="card-title"><span class="icon">📷</span> 1. Barcode / QR Scanning</div>
+            <div class="card-body">
+              Integrate camera-based 2D DataMatrix scanning to automatically read batch numbers and expiry dates from boxes.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="icon">📡</span> 2. Wireless IoT Sensors</div>
+            <div class="card-body">
+              Connect real IoT temperature sensors inside medicine refrigerators to broadcast telemetry automatically.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="icon">📲</span> 3. SMS / Email Alerts</div>
+            <div class="card-body">
+              Send immediate automated SMS alerts to the pharmacy manager when temperature excursions occur.
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-3" style="margin-top: 12px;">
+          <div class="card">
+            <div class="card-title"><span class="icon">🔐</span> 4. User Login & Roles</div>
+            <div class="card-body">
+              Implement Spring Security to provide separate logins for Pharmacists, Storekeepers, and Doctors.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="icon">☁️</span> 5. Cloud Deployment</div>
+            <div class="card-body">
+              Deploy backend and database on AWS or Render to enable access across multiple hospital branch locations.
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title"><span class="icon">🤖</span> 6. AI Demand Forecasting</div>
+            <div class="card-body">
+              Use machine learning models to forecast medicine demand trends based on seasonal illness patterns.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         SLIDE 20: CONCLUSION, LEARNINGS & VIVA Q&A
+         =================================================================== -->
+    <section class="slide" id="slide-20" style="text-align: center; align-items: center; justify-content: center;">
+      <div class="slide-header" style="width: 100%; text-align: left;">
+        <div>
+          <div class="slide-category">Summary & Conclusion</div>
+          <h2 class="slide-title">Conclusion & Viva Defense</h2>
+        </div>
+        <span class="slide-badge">Slide 20 / 20</span>
+      </div>
+      <div class="slide-content" style="width: 100%; max-width: 900px; text-align: left;">
+        <div class="grid-2">
+          <div class="card" style="border-left: 4px solid var(--primary);">
+            <div class="card-title">📌 Project Conclusion</div>
+            <ul class="clean-list" style="margin-top: 6px;">
+              <li>Successfully built a full-stack pharmacy supply chain simulator.</li>
+              <li>Enforces strict <strong>FEFO</strong> dispensing to reduce drug expiry losses.</li>
+              <li>Monitors cold-chain compliance to safeguard sensitive medicines.</li>
+              <li>Protects against counterfeit batches with 1-click verification.</li>
+            </ul>
+          </div>
+          <div class="card" style="border-left: 4px solid var(--accent);">
+            <div class="card-title">🎓 What We Learned</div>
+            <ul class="clean-list" style="margin-top: 6px;">
+              <li>Developing clean REST APIs using <strong>Java Spring Boot 3</strong>.</li>
+              <li>Managing 3NF database persistence with <strong>Spring Data JPA</strong>.</li>
+              <li>Creating responsive clinical user interfaces with <strong>HTML5 & CSS3</strong>.</li>
+              <li>Wiring frontend & backend using JavaScript <strong>Fetch API</strong>.</li>
+              <li>Systematic debugging of CORS and HTTP error status codes.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 24px; padding: 20px; background: var(--primary-light); border: 1px solid var(--primary-border); border-radius: 8px;">
+          <h3 style="font-size: 24px; font-weight: 900; color: var(--primary); margin-bottom: 6px;">Thank You!</h3>
+          <p style="font-size: 15px; color: var(--text-main); font-weight: 600;">
+            We are now ready to answer questions from respected examiners.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Bottom Navigation & Counter Footer -->
+  <footer class="nav-footer">
+    <div class="nav-controls">
+      <button class="nav-btn" id="prevBtn" onclick="prevSlide()">← Prev</button>
+      <div class="slide-counter" id="slideCounter">Slide 1 / 20</div>
+      <button class="nav-btn" id="nextBtn" onclick="nextSlide()">Next →</button>
+    </div>
+    <div class="nav-help">
+      Keyboard: <kbd>←</kbd> Prev | <kbd>→</kbd> or <kbd>Space</kbd> Next | <kbd>Home</kbd> First | <kbd>End</kbd> Last
+    </div>
+  </footer>
+
+  <!-- Vanilla JavaScript Presentation Engine -->
+  <script>
+    const TOTAL_SLIDES = 20;
+    let currentSlide = 1;
+
+    const slides = document.querySelectorAll('.slide');
+    const counter = document.getElementById('slideCounter');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const progressBar = document.getElementById('progressBar');
+
+    function updatePresentation() {
+      // Hide all slides, display current
+      slides.forEach((slide, index) => {
+        if (index + 1 === currentSlide) {
+          slide.classList.add('active');
+        } else {
+          slide.classList.remove('active');
+        }
+      });
+
+      // Update counter text
+      counter.innerText = `Slide ${currentSlide} / ${TOTAL_SLIDES}`;
+
+      // Update progress bar
+      const progressPercent = (currentSlide / TOTAL_SLIDES) * 100;
+      progressBar.style.width = `${progressPercent}%`;
+
+      // Update button disabled states
+      prevBtn.disabled = (currentSlide === 1);
+      nextBtn.disabled = (currentSlide === TOTAL_SLIDES);
+    }
+
+    function nextSlide() {
+      if (currentSlide < TOTAL_SLIDES) {
+        currentSlide++;
+        updatePresentation();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        currentSlide--;
+        updatePresentation();
+      }
+    }
+
+    function goToSlide(slideNum) {
+      if (slideNum >= 1 && slideNum <= TOTAL_SLIDES) {
+        currentSlide = slideNum;
+        updatePresentation();
+      }
+    }
+
+    // Keyboard Event Listener
+    document.addEventListener('keydown', (e) => {
+      // Avoid intercepting if user is typing in an input
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        goToSlide(1);
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        goToSlide(TOTAL_SLIDES);
+      }
+    });
+
+    // Initialize on load
+    document.addEventListener('DOMContentLoaded', updatePresentation);
+  </script>
+</body>
+</html>

@@ -1,0 +1,319 @@
+{
+  "info": {
+    "name": "Smart Pharmacy Supply Chain System API",
+    "description": "Comprehensive Postman Test Collection covering CRUD, FEFO Dispensing, Cold-Chain Compliance, Expiry Alerts, Batch Verification, and 409/400 Edge Cases.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Dashboard Stats",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/dashboard/stats",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "dashboard", "stats"]
+        }
+      }
+    },
+    {
+      "name": "2. Add Supplier",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"supplierName\": \"Novartis Logistics India\",\n  \"contactPerson\": \"Amit Verma\",\n  \"phone\": \"+91 9988776655\",\n  \"email\": \"supply@novartis.in\",\n  \"address\": \"Sector 21, Cyber City, Gurugram\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/suppliers",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "suppliers"]
+        }
+      }
+    },
+    {
+      "name": "3. Get All Suppliers",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/suppliers",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "suppliers"]
+        }
+      }
+    },
+    {
+      "name": "4. Add Medicine",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Azithromycin\",\n  \"genericName\": \"Azithromycin Dihydrate\",\n  \"category\": \"Antibiotics\",\n  \"dosage\": \"500mg\",\n  \"minTemperature\": 15.0,\n  \"maxTemperature\": 30.0\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/medicines",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "medicines"]
+        }
+      }
+    },
+    {
+      "name": "5. Get All Medicines",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/medicines",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "medicines"]
+        }
+      }
+    },
+    {
+      "name": "6. Add Batch (Valid)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"batchNumber\": \"BATCH-AZI-101\",\n  \"medicineId\": 1,\n  \"supplierId\": 1,\n  \"manufacturer\": \"Apex Laboratories\",\n  \"manufacturingDate\": \"2026-02-01\",\n  \"expiryDate\": \"2027-08-01\",\n  \"quantity\": 100,\n  \"storageRequirement\": \"Room Temperature (15-25°C)\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/batches",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "batches"]
+        }
+      }
+    },
+    {
+      "name": "7. Add Batch (Duplicate Conflict - 409 Edge Case)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"batchNumber\": \"BATCH-PCM-001\",\n  \"medicineId\": 1,\n  \"supplierId\": 1,\n  \"manufacturer\": \"Apex Laboratories\",\n  \"manufacturingDate\": \"2026-02-01\",\n  \"expiryDate\": \"2027-08-01\",\n  \"quantity\": 50,\n  \"storageRequirement\": \"Room Temperature\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/batches",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "batches"]
+        }
+      }
+    },
+    {
+      "name": "8. Add Batch (Invalid Date Order - 400 Edge Case)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"batchNumber\": \"BATCH-BAD-DATE\",\n  \"medicineId\": 1,\n  \"supplierId\": 1,\n  \"manufacturer\": \"Apex Laboratories\",\n  \"manufacturingDate\": \"2027-01-01\",\n  \"expiryDate\": \"2026-01-01\",\n  \"quantity\": 50,\n  \"storageRequirement\": \"Room Temperature\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/batches",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "batches"]
+        }
+      }
+    },
+    {
+      "name": "9. Get Batch By Batch Number",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/batches/number/BATCH001",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "batches", "number", "BATCH001"]
+        }
+      }
+    },
+    {
+      "name": "10. Batch Verification (Query BATCH001)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"batchNumber\": \"BATCH001\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/batches/verify",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "batches", "verify"]
+        }
+      }
+    },
+    {
+      "name": "11. Batch Verification (Verify Action)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"batchNumber\": \"BATCH-AMX-999\",\n  \"action\": \"VERIFY\",\n  \"notes\": \"Quality inspection cleared\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/batches/verify",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "batches", "verify"]
+        }
+      }
+    },
+    {
+      "name": "12. Batch Verification (Reject Action)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"batchNumber\": \"BATCH-AMX-999\",\n  \"action\": \"REJECT\",\n  \"notes\": \"Damaged packaging\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/batches/verify",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "batches", "verify"]
+        }
+      }
+    },
+    {
+      "name": "13. Expiry Alerts (All Near-Expiry)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/api/batches/expiry-alerts",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "batches", "expiry-alerts"]
+        }
+      }
+    },
+    {
+      "name": "14. Temperature Log (Compliant - 5.0°C for 2-8°C)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"batchId\": 6,\n  \"recordedTemperature\": 5.0,\n  \"notes\": \"Daily cold room audit\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/temperature-logs",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "temperature-logs"]
+        }
+      }
+    },
+    {
+      "name": "15. Temperature Log (Out Of Range - 12.0°C for 2-8°C)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"batchId\": 6,\n  \"recordedTemperature\": 12.0,\n  \"notes\": \"Compressor defrost spike\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/temperature-logs",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "temperature-logs"]
+        }
+      }
+    },
+    {
+      "name": "16. FEFO Dispense Medicine (Paracetamol 10 Units)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"medicineId\": 1,\n  \"quantity\": 10,\n  \"dispensedTo\": \"Ward 3B\",\n  \"notes\": \"Routine inpatient prescription\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/dispense",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "dispense"]
+        }
+      }
+    },
+    {
+      "name": "17. FEFO Dispense (Insufficient Stock - 409 Edge Case)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"medicineId\": 1,\n  \"quantity\": 9999,\n  \"dispensedTo\": \"Emergency\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8080/api/dispense",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8080",
+          "path": ["api", "dispense"]
+        }
+      }
+    }
+  ]
+}
