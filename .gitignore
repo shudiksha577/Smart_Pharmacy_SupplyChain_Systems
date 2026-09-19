@@ -1,0 +1,18 @@
+# Tooling & Environments
+mingit/
+maven/
+*.log
+
+# Build Outputs
+backend/target/
+target/
+*.class
+
+# IDE & Editor
+.vscode/
+.idea/
+*.iml
+
+# OS files
+Thumbs.db
+Desktop.ini
