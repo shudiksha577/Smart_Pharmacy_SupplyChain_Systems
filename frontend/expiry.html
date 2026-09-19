@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expiry Alerts — Smart Pharmacy Supply Chain System</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand-section">
+        <div class="brand-icon">⚕</div>
+        <div>
+          <div class="brand-title">Smart Pharmacy</div>
+          <div class="brand-subtitle">Supply Chain System</div>
+        </div>
+      </div>
+      <ul class="nav-menu">
+        <li class="nav-item">
+          <a href="index.html"><span class="nav-icon">📊</span> <span>Dashboard</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="medicines.html"><span class="nav-icon">💊</span> <span>Medicines</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="suppliers.html"><span class="nav-icon">🏢</span> <span>Suppliers</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="batches.html"><span class="nav-icon">📦</span> <span>Batches</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="dispense.html"><span class="nav-icon">⚖️</span> <span>FEFO Dispense</span></a>
+        </li>
+        <li class="nav-item active">
+          <a href="expiry.html"><span class="nav-icon">⏳</span> <span>Expiry Alerts</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="temperature.html"><span class="nav-icon">🌡️</span> <span>Cold-Chain Temp</span></a>
+        </li>
+        <li class="nav-item">
+          <a href="verification.html"><span class="nav-icon">🛡️</span> <span>Batch Verification</span></a>
+        </li>
+      </ul>
+      <div class="sidebar-footer">
+        <span class="status-dot"></span> System Connected (Spring Boot 3)
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="main-wrapper">
+      <header class="top-header">
+        <div class="page-headline">
+          <h1>Expiry Monitoring Radar</h1>
+          <p>Automated multi-tier alert thresholds: Expired, 30 Days (Critical), 60 Days (Warning), and 90 Days (Notice)</p>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary btn-sm" onclick="loadAlerts()">🔄 Refresh Alerts</button>
+        </div>
+      </header>
+
+      <main class="content-body">
+        <!-- Filter Tabs -->
+        <div class="tab-list">
+          <button class="tab-btn active" onclick="switchCategory('ALL', this)">All Near-Expiry (<span id="count-all">0</span>)</button>
+          <button class="tab-btn" onclick="switchCategory('EXPIRED', this)">🛑 Expired (<span id="count-expired">0</span>)</button>
+          <button class="tab-btn" onclick="switchCategory('CRITICAL_30', this)">🚨 ≤ 30 Days (<span id="count-30">0</span>)</button>
+          <button class="tab-btn" onclick="switchCategory('WARNING_60', this)">⚠️ ≤ 60 Days (<span id="count-60">0</span>)</button>
+          <button class="tab-btn" onclick="switchCategory('NOTICE_90', this)">ℹ️ ≤ 90 Days (<span id="count-90">0</span>)</button>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <h2 class="panel-title" id="table-title">All Tracked Batches Requiring Action</h2>
+            <div style="font-size:13px; color:var(--gray-500);">Ordered by earliest expiry date</div>
+          </div>
+          <div class="panel-body no-padding">
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Batch Number</th>
+                    <th>Medicine Name</th>
+                    <th>Category</th>
+                    <th>Physical Stock</th>
+                    <th>Storage Spec</th>
+                    <th>Expiry Date</th>
+                    <th>Days Remaining</th>
+                    <th>Alert Severity</th>
+                    <th>Dispensing Status</th>
+                  </tr>
+                </thead>
+                <tbody id="expiry-tbody">
+                  <tr><td colspan="9" style="text-align:center; padding: 24px;">Scanning expiry radar...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script>
+    let currentCategory = 'ALL';
+    let allAlerts = [];
+
+    async function loadAlerts() {
+      try {
+        const res = await API.getExpiryAlerts('');
+        allAlerts = res.data;
+
+        // Compute counts
+        let expCount = 0, c30 = 0, c60 = 0, c90 = 0;
+        allAlerts.forEach(a => {
+          if (a.alertCategory === 'EXPIRED') expCount++;
+          else if (a.alertCategory === 'CRITICAL_30') c30++;
+          else if (a.alertCategory === 'WARNING_60') c60++;
+          else if (a.alertCategory === 'NOTICE_90') c90++;
+        });
+
+        document.getElementById('count-all').innerText = allAlerts.length;
+        document.getElementById('count-expired').innerText = expCount;
+        document.getElementById('count-30').innerText = c30;
+        document.getElementById('count-60').innerText = c60;
+        document.getElementById('count-90').innerText = c90;
+
+        renderFiltered();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function switchCategory(cat, btn) {
+      currentCategory = cat;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderFiltered();
+    }
+
+    function renderFiltered() {
+      const filtered = (currentCategory === 'ALL')
+        ? allAlerts
+        : allAlerts.filter(a => a.alertCategory === currentCategory);
+
+      const tbody = document.getElementById('expiry-tbody');
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding: 28px; color: var(--gray-500);">No batches match this filter criteria.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(a => {
+        const isExpired = a.daysRemaining < 0;
+        return `
+          <tr style="${isExpired ? 'background-color:#fff1f2;' : ''}">
+            <td><strong>${a.batchNumber}</strong></td>
+            <td>${a.medicineName} <br><span style="font-size:12px; color:var(--gray-500);">${a.genericName}</span></td>
+            <td>${a.category}</td>
+            <td><strong style="font-size:15px;">${a.quantity}</strong></td>
+            <td><span style="font-size:12px;">${a.storageRequirement}</span></td>
+            <td><strong>${formatDate(a.expiryDate)}</strong></td>
+            <td>
+              ${isExpired 
+                ? '<span style="color:var(--danger); font-weight:800;">EXPIRED (' + Math.abs(a.daysRemaining) + ' days ago)</span>'
+                : `<strong style="color:${a.daysRemaining <= 30 ? 'var(--danger)' : 'var(--warning)'};">${a.daysRemaining} days left</strong>`
+              }
+            </td>
+            <td>${getAlertBadge(a.alertCategory, a.daysRemaining)}</td>
+            <td>
+              ${isExpired 
+                ? '<span class="badge badge-rejected">LOCKED (EXPIRED)</span>'
+                : '<span class="badge badge-verified">ELIGIBLE FOR FEFO</span>'
+              }
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    document.addEventListener('DOMContentLoaded', loadAlerts);
+  </script>
+</body>
+</html>

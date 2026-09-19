@@ -1,0 +1,492 @@
+[
+  {
+    "num": 1,
+    "type": "title",
+    "badge": "Final Year Capstone Project Presentation",
+    "title": "Smart Pharmacy Supply Chain System",
+    "subtitle": "Digital Medicine Batch Tracking, FEFO Dispensing & Cold-Chain Monitoring",
+    "studentTitle": "Student Details",
+    "students": [
+      { "role": "Student 1", "name": "Shudiksha Sugeerthanaa", "reg": "44731123" },
+      { "role": "Student 2", "name": "Sofiya S", "reg": "44731112" }
+    ],
+    "teamId": "CSE-AI-CAP-2026",
+    "academicTitle": "Academic Details",
+    "department": "B.E. Computer Science & Engineering (AI)",
+    "institution": "Sathyabama Institute of Science and Technology (SIST)",
+    "academicYear": "2026 - 2027"
+  },
+  {
+    "num": 2,
+    "type": "cards_and_list",
+    "category": "Introduction & Domain",
+    "title": "What is a Pharmacy Supply Chain?",
+    "highlight": "A pharmacy supply chain is the step-by-step process of how medicines travel safely from pharmaceutical manufacturers to hospital pharmacies and patients.",
+    "cards": [
+      {
+        "title": "1. Manufacturer",
+        "body": "Produces pharmaceutical drugs in discrete batches with fixed manufacturing and expiry dates."
+      },
+      {
+        "title": "2. Distributor / Supplier",
+        "body": "Transports medicine boxes to hospitals while maintaining safe temperature standards."
+      },
+      {
+        "title": "3. Hospital Pharmacy",
+        "body": "Stores stock safely, checks expiry, and dispenses the right medicine batch to patients."
+      }
+    ],
+    "listTitle": "Why is Proper Tracking Important?",
+    "listItems": [
+      "Patient Safety: Patients must never receive an expired, compromised, or counterfeit drug.",
+      "Drug Potency: Temperature-sensitive medicines like Insulin lose strength if stored in the wrong temperature.",
+      "Preventing Losses: Using medicines in the correct order prevents medicines from expiring on pharmacy shelves."
+    ]
+  },
+  {
+    "num": 3,
+    "type": "grid_cards",
+    "category": "Problem Statement",
+    "title": "Real-World Pharmacy Inefficiencies",
+    "intro": "Hospital pharmacies face 5 major practical challenges that cause medical and financial losses:",
+    "gridCards": [
+      {
+        "title": "1. High Medicine Expiry Wastage",
+        "body": "Medicines often sit unnoticed in storage racks and expire before staff realizes they need to be used."
+      },
+      {
+        "title": "2. Random Dispensing Order",
+        "body": "Staff naturally pick the newest boxes in front, leaving older batches behind to expire unnoticed."
+      },
+      {
+        "title": "3. Unmonitored Cold-Chain Storage",
+        "body": "Medicines like Insulin or Vaccines spoil if refrigerators get too warm, but temperature checks are rarely automated."
+      },
+      {
+        "title": "4. Counterfeit Medicine Risks",
+        "body": "Unverified or fake medicine batches can enter the hospital supply chain without a quick verification tool."
+      }
+    ],
+    "fullCard": {
+      "title": "5. Manual Inventory Errors",
+      "body": "Paper-based stock logs lead to human counting mistakes, stock-outs during emergencies, and missing batches."
+    }
+  },
+  {
+    "num": 4,
+    "type": "table_slide",
+    "category": "Existing System",
+    "title": "The Traditional Manual Approach",
+    "highlight": "Most small and medium pharmacies still rely on paper registers or basic Excel spreadsheets.",
+    "table": {
+      "headers": ["Pharmacy Task", "Existing Manual Method", "Major Bottleneck / Risk"],
+      "colWidths": [200, 360, 340],
+      "rows": [
+        ["Stock Recording", "Writing medicine entries by hand in paper books.", "Handwriting errors, lost pages, slow searches."],
+        ["Expiry Tracking", "Staff manually read tiny printed dates on boxes every month.", "Easy to miss boxes; expired stock given to patients."],
+        ["Medicine Dispensing", "Pharmacist grabs whichever bottle is nearest on shelf.", "Violates FEFO; older stock expires on the shelf."],
+        ["Temperature Checks", "Manual thermometer readings logged on a clipboard.", "No instant alerts when a refrigerator fails at night."],
+        ["Batch Verification", "Phone calls or paper invoice checks with suppliers.", "Slow process; counterfeit drugs cannot be caught fast."]
+      ]
+    }
+  },
+  {
+    "num": 5,
+    "type": "flow_and_cards",
+    "category": "Proposed Solution",
+    "title": "Our Centralized 3-Tier System",
+    "intro": "We built a clean, centralized web application that automates pharmacy operations in 3 simple tiers:",
+    "steps": [
+      { "num": "Tier 1: Frontend", "tech": "HTML5 / CSS3 / Vanilla JS", "desc": "Clean UI screen staff uses" },
+      { "num": "Tier 2: Backend", "tech": "Java Spring Boot 3 REST API", "desc": "Executes FEFO & check logic" },
+      { "num": "Tier 3: Database", "tech": "MySQL 8.0 Relational DB", "desc": "Safely stores all pharmacy data" }
+    ],
+    "cards": [
+      {
+        "title": "What Our System Does Automatically",
+        "items": [
+          "Picks the earliest expiring batch automatically when dispensing (FEFO).",
+          "Calculates expiry alerts at 90, 60, and 30 days before expiry.",
+          "Locks expired and rejected batches so they cannot be dispensed."
+        ]
+      },
+      {
+        "title": "Key Safety Guarantees",
+        "items": [
+          "Instantly flags cold-chain temperature readings that are outside safety limits.",
+          "Checks batch numbers against authentic records to stop counterfeit drugs.",
+          "Keeps an itemized digital receipt for every medicine dispensed."
+        ]
+      }
+    ]
+  },
+  {
+    "num": 6,
+    "type": "grid_cards",
+    "category": "Objectives",
+    "title": "SMART Project Objectives",
+    "intro": "Our project was developed with clear, measurable goals designed for real hospital pharmacies:",
+    "gridCards": [
+      {
+        "title": "1. Digital Batch Tracking",
+        "body": "Track every physical batch with unique batch number, medicine name, manufacturer, supplier, and expiry date."
+      },
+      {
+        "title": "2. Strict FEFO Dispensing",
+        "body": "Enforce 100% First-Expired-First-Out dispensing logic so older authentic batches are always issued first."
+      },
+      {
+        "title": "3. Multi-Tier Expiry Radar",
+        "body": "Categorize inventory into Expired, 30-day (Critical), 60-day (Warning), and 90-day (Notice) alert windows."
+      },
+      {
+        "title": "4. Cold-Chain Compliance Checking",
+        "body": "Validate thermal sensor readings against medicine temperature ranges (e.g. 2C to 8C for Insulin)."
+      }
+    ],
+    "fullCard": {
+      "title": "5. Anti-Counterfeit Batch Verification",
+      "body": "Verify whether a batch is VERIFIED, UNVERIFIED, REJECTED, or NOT FOUND with 1-click verify and reject actions."
+    }
+  },
+  {
+    "num": 7,
+    "type": "grid_8",
+    "category": "Features",
+    "title": "8 Key Features Implemented",
+    "features": [
+      { "title": "1. Medicines", "desc": "Add and edit catalog drugs with brand name, dosage, and min/max temperature limits." },
+      { "title": "2. Suppliers", "desc": "Maintain verified manufacturer and vendor contacts, phones, and warehouse addresses." },
+      { "title": "3. Batches", "desc": "Track discrete batches with unique IDs, quantities, and manufacturing & expiry dates." },
+      { "title": "4. FEFO Dispense", "desc": "Core engine: automatically selects earliest expiring batch and updates stock balances." },
+      { "title": "5. Expiry Radar", "desc": "Alerts tab filtering batches into Expired, 30 days, 60 days, and 90 days remaining." },
+      { "title": "6. Temp Logger", "desc": "Evaluates sensor readings: flags COMPLIANT or OUT_OF_RANGE with diagnostic alerts." },
+      { "title": "7. Verification", "desc": "Scans batch numbers to detect counterfeit drugs with 1-click Verify/Reject controls." },
+      { "title": "8. Dashboard", "desc": "5 live KPI summary counters and 3 real-time alert tables without heavy charts." }
+    ]
+  },
+  {
+    "num": 8,
+    "type": "grid_tech",
+    "category": "Tech Stack",
+    "title": "Technology Stack Breakdown",
+    "cards": [
+      {
+        "title": "Frontend (Client Tier)",
+        "items": [
+          "HTML5: Semantic layout structure (<header>, <nav>, <main>, <table>).",
+          "CSS3: Custom clinical design system using CSS Grid & Flexbox (no Tailwind, no Bootstrap).",
+          "Vanilla JavaScript (ES6+): Clean browser logic without heavy React or Angular dependencies.",
+          "Fetch API: Asynchronous JSON HTTP calls connecting to the backend."
+        ]
+      },
+      {
+        "title": "Backend (Application Tier)",
+        "items": [
+          "Java 17: Modern, secure, object-oriented programming language.",
+          "Spring Boot 3: Lightweight, production-ready framework for REST APIs.",
+          "Spring Data JPA: Hibernate ORM for safe, boilerplate-free database operations.",
+          "Bean Validation: Validates clean inputs (@NotNull, @NotBlank, @Positive)."
+        ]
+      },
+      {
+        "title": "Database (Storage Tier)",
+        "body": "MySQL 8.0: Robust relational database engine managing 3NF normalized tables with foreign keys and unique constraints. (Includes local H2 fallback for instant viva demonstration)."
+      },
+      {
+        "title": "Developer & Testing Tools",
+        "body": "Antigravity IDE / VS Code: Code editing & debugging.\nApache Maven: Dependency & build management.\nPostman: REST API endpoint testing."
+      }
+    ]
+  },
+  {
+    "num": 9,
+    "type": "architecture",
+    "category": "System Architecture",
+    "title": "3-Tier Architecture & Multi-Port Data Flow",
+    "intro": "The system follows a strict, industry-standard 3-tier architecture with dedicated network ports:",
+    "tiers": [
+      { "title": "TIER 1: FRONTEND", "subtitle": "Web Browser", "badge": "Port :5500 / Browser" },
+      { "title": "TIER 2: BACKEND", "subtitle": "Spring Boot 3 REST Server", "badge": "Port :8080 (Tomcat)" },
+      { "title": "TIER 3: DATABASE", "subtitle": "MySQL 8.0 Relational DB", "badge": "Port :3306 (TCP/IP)" }
+    ],
+    "flowText": "Step-by-Step Data Flow:\nPharmacy Staff clicks 'Dispense' on screen -> Frontend sends JSON to Backend (Port 8080) -> Spring Boot checks FEFO rules and executes SQL on MySQL (Port 3306) -> MySQL returns updated records -> Frontend displays the instant receipt!"
+  },
+  {
+    "num": 10,
+    "type": "table_slide",
+    "category": "Modules",
+    "title": "Application Modules Breakdown",
+    "highlight": "8 dedicated functional modules covering complete pharmaceutical inventory management:",
+    "table": {
+      "headers": ["Module Name", "Web Page File", "Single-Sentence Purpose"],
+      "colWidths": [220, 180, 500],
+      "rows": [
+        ["1. Dashboard", "index.html", "Displays 5 quick summary numbers and recent alert tables at a single glance."],
+        ["2. Medicines", "medicines.html", "Allows staff to register, update, and search medicines and their safe storage temperature limits."],
+        ["3. Suppliers", "suppliers.html", "Stores certified manufacturer contact details, emails, and physical warehouse addresses."],
+        ["4. Batches", "batches.html", "Tracks discrete medicine batches with unique batch numbers, stock count, and expiry dates."],
+        ["5. FEFO Dispense", "dispense.html", "Automatically selects and deducts from the earliest-expiring verified batch to prevent wastage."],
+        ["6. Expiry Alerts", "expiry.html", "Groups inventory into Expired, 30-day, 60-day, and 90-day alert tabs so near-expiry stock is quarantined."],
+        ["7. Temperature Logger", "temperature.html", "Logs thermal sensor readings and checks if cold-chain medicine temperatures stay within safe limits."],
+        ["8. Batch Verification", "verification.html", "Looks up batch authenticity and lets pharmacists mark suspect stock as VERIFIED or REJECTED."]
+      ]
+    }
+  },
+  {
+    "num": 11,
+    "type": "database",
+    "category": "Database Design",
+    "title": "Normalized MySQL 3NF Database Structure",
+    "highlight": "The database is normalized to Third Normal Form (3NF). This avoids repeating data and guarantees that every table has a Primary Key and clean Foreign Keys.",
+    "tables": [
+      {
+        "name": "medicines Table",
+        "columns": "id (PK), name (UNIQUE), generic_name, category, dosage, min_temperature, max_temperature, created_at.",
+        "purpose": "Stores the official drug catalog and storage rules."
+      },
+      {
+        "name": "suppliers Table",
+        "columns": "id (PK), supplier_name (UNIQUE), contact_person, phone, email, address, created_at.",
+        "purpose": "Stores authorized distributor credentials."
+      },
+      {
+        "name": "batches Table",
+        "columns": "id (PK), batch_number (UNIQUE), medicine_id (FK), supplier_id (FK), manufacturer, manufacturing_date, expiry_date, quantity, storage_requirement, verification_status.",
+        "purpose": "Physical inventory ledger used for FEFO sorting."
+      },
+      {
+        "name": "temperature_logs Table",
+        "columns": "id (PK), batch_id (FK), recorded_temperature, recorded_at, compliance_status, notes.",
+        "purpose": "Stores cold-chain temperature readings."
+      }
+    ],
+    "relationship": "Simple Relationships: 1 Medicine -> has many Batches | 1 Supplier -> provides many Batches | 1 Batch -> has many Temperature Logs"
+  },
+  {
+    "num": 12,
+    "type": "dfd",
+    "category": "System Modeling",
+    "title": "Data Flow Diagrams (Level 0 & Level 1)",
+    "dfd0": {
+      "title": "DFD Level 0 (Context Level)",
+      "actor": "Pharmacy Staff / Admin",
+      "flow1": "Inputs & Requests",
+      "system": "[0.0] Smart Pharmacy Supply Chain System",
+      "flow2": "SQL Reads / Writes",
+      "db": "MySQL 8.0 Database"
+    },
+    "dfd1": {
+      "title": "DFD Level 1 (Major Processes)",
+      "processes": [
+        "1.0 Manage Drugs: Add/Update drug names & temperature rules.",
+        "2.0 Manage Suppliers: Add/Update certified vendor information.",
+        "3.0 Manage Batches: Record physical batch number, mfg & exp date.",
+        "4.0 FEFO Dispensing: Query earliest verified batch & deduct stock.",
+        "5.0 Verify Batch: Authenticate batch & mark VERIFIED or REJECTED.",
+        "6.0 Cold-Chain Monitor: Compare sensor reading with drug thresholds.",
+        "7.0 Expiry Radar: Group active inventory by days remaining."
+      ]
+    }
+  },
+  {
+    "num": 13,
+    "type": "workflow",
+    "category": "User Workflow",
+    "title": "End-to-End Pharmacy Workflow & FEFO Example",
+    "intro": "The system guides the pharmacy staff through 8 clear, sequential steps:",
+    "steps": [
+      "1. Add Medicine",
+      "2. Add Supplier",
+      "3. Add Batch",
+      "4. Verify Batch",
+      "5. Log Temp",
+      "6. Check Expiry",
+      "7. FEFO Dispense",
+      "8. Stock Updates"
+    ],
+    "fefoCard": {
+      "title": "Easy FEFO Concept Explained",
+      "rule": "FEFO Rule: 'The batch that expires first must be used first.'",
+      "boxA": {
+        "title": "Batch A: Expires 10-October-2026 (Qty: 20)",
+        "badge": "Selected 1st (Earliest Expiry)"
+      },
+      "boxB": {
+        "title": "Batch B: Expires 15-December-2026 (Qty: 40)",
+        "badge": "Selected 2nd (Expires Later)"
+      },
+      "explanation": "When dispensing 10 units of Paracetamol, our system automatically deducts 10 from Batch A and leaves Batch B untouched."
+    }
+  },
+  {
+    "num": 14,
+    "type": "frontend",
+    "category": "Frontend Design",
+    "title": "Accessible Forms & Clean User Interface",
+    "intro": "The user interface is built with Vanilla HTML5 and CSS3 to ensure clean readability on any projector or screen:",
+    "topCards": [
+      {
+        "title": "Fixed Navigation",
+        "body": "A clean left sidebar gives staff quick 1-click access to all 8 pharmacy sections without getting lost."
+      },
+      {
+        "title": "Fully Responsive",
+        "body": "CSS Grid and Flexbox automatically adapt from 360px mobile viewports to 1920px widescreen clinic desktops."
+      },
+      {
+        "title": "Clear Visual Badges",
+        "body": "Color-coded tags (Green for Verified, Amber for Unverified, Red for Out-of-Range or Rejected) guide quick clinical decisions."
+      }
+    ],
+    "bottomCards": [
+      {
+        "title": "Real-Time FEFO Receipt Card",
+        "body": "Immediately after clicking Dispense, the screen displays a dashed receipt card showing the exact batch number used and how many units remain."
+      },
+      {
+        "title": "Non-Intrusive Toast Alerts",
+        "body": "Success and warning messages pop up at the top right for 4 seconds, confirming actions without disruptive browser alert boxes."
+      }
+    ]
+  },
+  {
+    "num": 15,
+    "type": "backend_arch",
+    "category": "Backend Architecture",
+    "title": "Controller, Service & Repository Layers",
+    "intro": "The Java Spring Boot backend separates code into 3 distinct responsibilities:",
+    "layers": [
+      { "num": "1. Controller Layer", "annotation": "@RestController", "desc": "Receives requests from browser" },
+      { "num": "2. Service Layer", "annotation": "@Service + @Transactional", "desc": "Performs FEFO & validation logic" },
+      { "num": "3. Repository Layer", "annotation": "@Repository (Spring Data JPA)", "desc": "Executes safe queries on MySQL" }
+    ],
+    "example": "Real Execution Example:\nStaff requests to dispense 10 Paracetamol -> DispenseController receives HTTP POST -> DispenseServiceImpl calls findAvailableBatchesForFefo, sorts by earliest expiry date, deducts stock, and saves DispenseRecord -> Returns clean JSON!",
+    "exceptionCard": {
+      "title": "Global Exception Handler (@RestControllerAdvice)",
+      "body": "Catches errors automatically: returns 404 if batch not found, 409 if stock is insufficient or duplicate batch is submitted, and 400 for invalid dates."
+    }
+  },
+  {
+    "num": 16,
+    "type": "table_slide",
+    "category": "Database Operations",
+    "title": "Database CRUD Operations via JPA",
+    "highlight": "SQL Injection Protection: All database queries use Spring Data JPA parameterized inputs. No raw SQL strings are concatenated, protecting the hospital pharmacy from SQL injection attacks.",
+    "table": {
+      "headers": ["CRUD Action", "Pharmacy Operation", "Java / JPA Execution", "Database Effect"],
+      "colWidths": [160, 240, 300, 200],
+      "rows": [
+        ["C - Create", "Register new medicine or add batch", "medicineRepository.save(medicine)", "INSERT INTO medicines ..."],
+        ["R - Read", "Query batches in FEFO order", "findAvailableBatchesForFefo()", "SELECT ... ORDER BY expiry_date ASC"],
+        ["U - Update", "Deduct stock; change verification status", "batch.setQuantity(newQty)", "UPDATE batches SET quantity = ?"],
+        ["D - Delete", "Remove old or canceled records", "medicineRepository.deleteById(id)", "DELETE FROM medicines WHERE id = ?"]
+      ]
+    }
+  },
+  {
+    "num": 17,
+    "type": "table_slide",
+    "category": "Testing & Verification",
+    "title": "Acceptance Criteria Verification Results",
+    "highlight": "Every functional requirement requested for this project was tested and passed directly on the live backend:",
+    "table": {
+      "headers": ["Acceptance Criterion", "Test Performed", "Status Code", "Result"],
+      "colWidths": [260, 420, 120, 100],
+      "rows": [
+        ["Track Medicine Batches", "Added batch with manufacturer, mfg date, exp date, and quantity.", "201 CREATED", "PASS"],
+        ["FEFO Dispensing", "Dispensed Paracetamol: batch expiring in Oct chosen over Dec.", "200 OK", "PASS"],
+        ["Multi-Batch Split", "Dispensed 25 units: 10 units from Batch A, 15 from Batch B.", "200 OK", "PASS"],
+        ["Expiry Alert Radar", "Calculated days remaining into 90d, 60d, 30d, and expired buckets.", "200 OK", "PASS"],
+        ["Batch Verification", "Searched BATCH001 -> VERIFIED; searched fake batch -> NOT FOUND.", "200 OK", "PASS"],
+        ["Cold-Chain Compliance", "Insulin (2-8C): 5C logged COMPLIANT; 12C logged OUT_OF_RANGE.", "201 CREATED", "PASS"],
+        ["Insufficient Stock Block", "Requested 1,000 units when only 25 units exist in verified stock.", "409 CONFLICT", "PASS"],
+        ["Duplicate Batch Block", "Attempted to insert already existing batch number BATCH-PCM-001.", "409 CONFLICT", "PASS"]
+      ]
+    }
+  },
+  {
+    "num": 18,
+    "type": "results",
+    "category": "Results",
+    "title": "Live Working Results from Implemented System",
+    "intro": "The application is live and running on localhost with realistic seeded hospital data:",
+    "cards": [
+      {
+        "title": "Executive Dashboard",
+        "items": [
+          "Total Medicines: 5",
+          "Active Batches: 10",
+          "Low Stock Items: 4",
+          "Expiring Soon (<90d): 4",
+          "Expired Batches: 1"
+        ]
+      },
+      {
+        "title": "FEFO Dispense Console",
+        "body": "Shows live preview queue of available verified batches. When staff dispenses, it generates a real-time transaction receipt showing remaining balances."
+      },
+      {
+        "title": "Cold-Chain Monitor",
+        "body": "Thermal audit simulator tests live sensor temperatures against drug limits and displays red alert badges for out-of-range violations."
+      }
+    ],
+    "highlight": "Verified API Test: Executed live curl and PowerShell REST tests verifying all 6 endpoints (/api/dispense, /api/batches/verify, /api/temperature-logs, /api/expiry-alerts, /api/dashboard/stats, /api/medicines)."
+  },
+  {
+    "num": 19,
+    "type": "grid_tech",
+    "category": "Future Work",
+    "title": "Future Enhancements & Scalability Roadmap",
+    "intro": "These are planned future improvements to expand this academic project for real commercial hospital deployment:",
+    "cards": [
+      {
+        "title": "1. Barcode / QR Scanning",
+        "body": "Integrate camera-based 2D DataMatrix scanning to automatically read batch numbers and expiry dates from boxes."
+      },
+      {
+        "title": "2. Wireless IoT Sensors",
+        "body": "Connect real IoT temperature sensors inside medicine refrigerators to broadcast telemetry automatically."
+      },
+      {
+        "title": "3. SMS / Email Alerts",
+        "body": "Send immediate automated SMS alerts to the pharmacy manager when temperature excursions occur."
+      },
+      {
+        "title": "4. User Login & Roles",
+        "body": "Implement Spring Security to provide separate logins for Pharmacists, Storekeepers, and Doctors."
+      },
+      {
+        "title": "5. Cloud Deployment",
+        "body": "Deploy backend and database on AWS or Render to enable access across multiple hospital branch locations."
+      },
+      {
+        "title": "6. AI Demand Forecasting",
+        "body": "Use machine learning models to forecast medicine demand trends based on seasonal illness patterns."
+      }
+    ]
+  },
+  {
+    "num": 20,
+    "type": "conclusion",
+    "category": "Summary & Conclusion",
+    "title": "Conclusion & Viva Defense",
+    "conclusionItems": [
+      "Successfully built a full-stack pharmacy supply chain simulator.",
+      "Enforces strict FEFO dispensing to reduce drug expiry losses.",
+      "Monitors cold-chain compliance to safeguard sensitive medicines.",
+      "Protects against counterfeit batches with 1-click verification."
+    ],
+    "learningItems": [
+      "Developing clean REST APIs using Java Spring Boot 3.",
+      "Managing 3NF database persistence with Spring Data JPA.",
+      "Creating responsive clinical user interfaces with HTML5 & CSS3.",
+      "Wiring frontend & backend using JavaScript Fetch API.",
+      "Systematic debugging of CORS and HTTP error status codes."
+    ],
+    "thankYou": {
+      "title": "Thank You!",
+      "body": "We are now ready to answer questions from respected examiners."
+    }
+  }
+]
